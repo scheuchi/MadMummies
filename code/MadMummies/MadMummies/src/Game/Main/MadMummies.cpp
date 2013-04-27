@@ -7,10 +7,9 @@
 #include "glew.h"
 #include "glfw.h"
 
-
-#pragma comment ( lib, "opengl32.lib" )
-#pragma comment ( lib, "glew32.lib" )
-#pragma comment ( lib, "GLFW.lib" )
+//#pragma comment ( lib, "opengl32.lib" )
+//#pragma comment ( lib, "glew32.lib" )
+//#pragma comment ( lib, "GLFW.lib" )
 
 
 #include <stdlib.h>
@@ -20,6 +19,7 @@
 
 #include "Game.h"
 #include "Engine/Util/Util.h"
+
 
 
 void OpenWindow(int width, int height)
@@ -116,6 +116,7 @@ void MainLoop()
 
 int main(int argc, char **argv)
 {
+	printf("hallo\n");
 	OpenWindow(1024, 768);
 	MainLoop();
 	return 0;

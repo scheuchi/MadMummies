@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{57359BB6-F8F0-4B11-8E3B-15EF5C593E79}</ProjectGuid>
+    <ProjectGuid>{47570A7B-FC0B-40FB-A0F2-B44E89F126B2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MadMummies</RootNamespace>
   </PropertyGroup>
@@ -39,29 +39,29 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\build$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IntDir>$(SolutionDir)\build$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\bin$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)/src;$(ProjectDir)/3psw/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\3psw\include;$(ProjectDir)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>GLFW.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)/3psw/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>$(ProjectDir)\3psw\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,15 +73,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)/src;$(ProjectDir)/3psw/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\3psw\include;$(ProjectDir)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>GLFW.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)/3psw/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\3psw\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -89,9 +89,14 @@
   <ItemGroup>
     <ClCompile Include="src\Engine\Behavior\Behavior.cpp" />
     <ClCompile Include="src\Engine\Core\Bitmap.cpp" />
+    <ClCompile Include="src\Engine\Core\Camera.cpp" />
+    <ClCompile Include="src\Engine\Core\Cube.cpp" />
     <ClCompile Include="src\Engine\Core\GraphicsResource.cpp" />
+    <ClCompile Include="src\Engine\Core\Light.cpp" />
     <ClCompile Include="src\Engine\Core\Mesh.cpp" />
+    <ClCompile Include="src\Engine\Core\Node.cpp" />
     <ClCompile Include="src\Engine\Core\NodeTraverser.cpp" />
+    <ClCompile Include="src\Engine\Core\RenderState.cpp" />
     <ClCompile Include="src\Engine\Core\Scene.cpp" />
     <ClCompile Include="src\Engine\Core\Shader.cpp" />
     <ClCompile Include="src\Engine\Core\Texture.cpp" />
@@ -101,19 +106,19 @@
     <ClCompile Include="src\Engine\Util\Util.cpp" />
     <ClCompile Include="src\Game\Loader\FileLoader.cpp" />
     <ClCompile Include="src\Game\Main\Game.cpp" />
-    <ClCompile Include="src\Engine\Core\Camera.cpp" />
-    <ClCompile Include="src\Engine\Core\Cube.cpp" />
-    <ClCompile Include="src\Engine\Core\Light.cpp" />
-    <ClCompile Include="src\Engine\Core\Node.cpp" />
     <ClCompile Include="src\Game\Main\MadMummies.cpp" />
-    <ClCompile Include="src\Engine\Core\RenderState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Behavior\Behavior.h" />
     <ClInclude Include="src\Engine\Core\Bitmap.h" />
+    <ClInclude Include="src\Engine\Core\Camera.h" />
+    <ClInclude Include="src\Engine\Core\Cube.h" />
     <ClInclude Include="src\Engine\Core\GraphicsResource.h" />
+    <ClInclude Include="src\Engine\Core\Light.h" />
     <ClInclude Include="src\Engine\Core\Mesh.h" />
+    <ClInclude Include="src\Engine\Core\Node.h" />
     <ClInclude Include="src\Engine\Core\NodeTraverser.h" />
+    <ClInclude Include="src\Engine\Core\RenderState.h" />
     <ClInclude Include="src\Engine\Core\Scene.h" />
     <ClInclude Include="src\Engine\Core\Shader.h" />
     <ClInclude Include="src\Engine\Core\Texture.h" />
@@ -123,15 +128,6 @@
     <ClInclude Include="src\Engine\Util\Util.h" />
     <ClInclude Include="src\Game\Loader\FileLoader.h" />
     <ClInclude Include="src\Game\Main\Game.h" />
-    <ClInclude Include="src\Engine\Core\Camera.h" />
-    <ClInclude Include="src\Engine\Core\Cube.h" />
-    <ClInclude Include="src\Engine\Core\Light.h" />
-    <ClInclude Include="src\Engine\Core\Node.h" />
-    <ClInclude Include="src\Engine\Core\RenderState.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\shader\SimpleColor.frag" />
-    <None Include="resources\shader\SimpleColor.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
