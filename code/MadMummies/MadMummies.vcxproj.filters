@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{74c046bd-6211-4c75-b9da-4018ac8e26b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core">
+      <UniqueIdentifier>{8d35bf52-e4a8-48e7-8611-0a599e12468a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Util">
+      <UniqueIdentifier>{a2ebc0c9-d420-4ce1-8994-6391e4781800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Behavior">
+      <UniqueIdentifier>{85902978-50f9-41c4-a874-d9fd5cbcda43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Loader">
+      <UniqueIdentifier>{72d6e16f-4b68-4d4b-bf61-5df4355686d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{2c2f800c-9c39-468d-8657-feebadbe9bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Main">
+      <UniqueIdentifier>{ab4fd0af-df2f-4536-a123-424954f8b7f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Loader">
+      <UniqueIdentifier>{25350690-7bbb-46ee-afd2-d7a0bf647bf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Behavior">
+      <UniqueIdentifier>{86bd1956-344f-472e-a681-77200faadaf1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Engine\Core\Cube.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Core\Light.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Core\RenderState.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Core\Camera.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Core\Node.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Behavior\Behavior.cpp">
+      <Filter>Engine\Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Loader\Loader.cpp">
+      <Filter>Engine\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Main\Game.cpp">
+      <Filter>Game\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Main\MadMummies.cpp">
+      <Filter>Game\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Core\Transformable.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Core\Scene.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\Loader\FileLoader.cpp">
+      <Filter>Game\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Core\NodeTraverser.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Util\Util.cpp" />
+    <ClCompile Include="src\Engine\Core\Mesh.cpp" />
+    <ClCompile Include="src\Engine\Core\Shader.cpp" />
+    <ClCompile Include="src\Engine\Core\VertexBufferObject.cpp" />
+    <ClCompile Include="src\Engine\Core\GraphicsResource.cpp" />
+    <ClCompile Include="src\Engine\Core\Texture.cpp" />
+    <ClCompile Include="src\Engine\Core\Bitmap.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Engine\Core\Cube.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Light.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\RenderState.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Camera.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Node.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Util\Util.h">
+      <Filter>Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Behavior\Behavior.h">
+      <Filter>Engine\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Loader\Loader.h">
+      <Filter>Engine\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\Main\Game.h">
+      <Filter>Game\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Transformable.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Scene.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game\Loader\FileLoader.h">
+      <Filter>Game\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\NodeTraverser.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Core\Mesh.h" />
+    <ClInclude Include="src\Engine\Core\Shader.h" />
+    <ClInclude Include="src\Engine\Core\VertexBufferObject.h" />
+    <ClInclude Include="src\Engine\Core\GraphicsResource.h" />
+    <ClInclude Include="src\Engine\Core\Texture.h" />
+    <ClInclude Include="src\Engine\Core\Bitmap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\shader\SimpleColor.frag" />
+    <None Include="resources\shader\SimpleColor.vert" />
+  </ItemGroup>
+</Project>

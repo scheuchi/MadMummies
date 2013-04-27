@@ -39,7 +39,7 @@ void Mesh::Render()
 		glUniform1i(location, (*itr)->GetTextureUnit()); 
 	}
  
-	glBindVertexArray(m_vaoHandle); 
+	glBindVertexArray(*m_vaoHandle); 
 	glDrawElements(GL_TRIANGLES, m_vertexBufferObject->GetVertexIndexCount(), GL_UNSIGNED_INT, 0); 
 	glBindVertexArray(0);
 	glUseProgram(0);
@@ -57,8 +57,9 @@ void Mesh::UploadToVram()
 	}
 
 	// (2) create Vertex Array Object (VAO)
-	glGenVertexArrays(1, &m_vaoHandle);
-	glBindVertexArray(m_vaoHandle);
+	m_vaoHandle = new GLuint;
+	glGenVertexArrays(1, m_vaoHandle);
+	glBindVertexArray(*m_vaoHandle);
  
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribPosition0));
 	GLint positionIndex = m_shader->GetAttributeLocation("position");
@@ -97,6 +98,6 @@ void Mesh::UnloadFromVram()
 		(*itr)->UnloadFromVram();
 	}
 
-	glDeleteVertexArrays(1, &m_vaoHandle);
+	glDeleteVertexArrays(1, m_vaoHandle);
 	Base::UnloadFromVram();
 }

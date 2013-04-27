@@ -33,6 +33,6 @@ public:
 private:
 	Shader* m_shader;
 	std::vector<Texture*> m_vecTextures;
-	GLuint m_vaoHandle;	
+	GLuint* m_vaoHandle;	
 	VertexBufferObject* m_vertexBufferObject;
 };

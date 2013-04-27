@@ -64,6 +64,9 @@ void OpenWindow(int width, int height)
 	// Enable sticky keys
 	glfwEnable(GLFW_STICKY_KEYS);
 
+	// glGenVertexArrays is not working otherwise
+	glewExperimental = GL_TRUE;
+
 	GLenum err = glewInit();
 	if (err != GLEW_OK) {
 		std::cout << glewGetErrorString(err);
@@ -116,7 +119,6 @@ void MainLoop()
 
 int main(int argc, char **argv)
 {
-	printf("hallo\n");
 	OpenWindow(1024, 768);
 	MainLoop();
 	return 0;
