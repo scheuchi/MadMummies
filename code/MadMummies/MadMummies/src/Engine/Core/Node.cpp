@@ -3,7 +3,7 @@
 #include "Engine/Behavior/Behavior.h"
 #include "Engine/Core/RenderState.h"
 
-Node::Node() : 	m_firstChild(0), m_parent(0), m_nextSibling(0), m_behavior(0), m_renderState(0)
+Node::Node() : 	m_firstChild(0), m_parent(0), m_nextSibling(0), m_behavior(0), m_renderState(0), m_scene(0)
 {
 }
 

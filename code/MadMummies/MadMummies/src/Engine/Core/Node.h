@@ -3,6 +3,7 @@
 
 class RenderState;
 class Behavior;
+class Scene;
 
 
 class Node
@@ -15,6 +16,11 @@ public:
 	virtual void Render();
 	virtual void UploadToVram() {};
 	virtual void UnloadFromVram() {};
+
+	Scene* GetScene() { return m_scene; }
+	void SetScene(Scene* scene) { m_scene = scene; OnSetScene(); }
+
+	virtual void OnSetScene() {}
 
 	Node* GetParent() { return m_parent; }
 	void SetParent(Node* parent) { m_parent = parent; }
@@ -36,6 +42,8 @@ public:
 
 private:
 	void SetNextSibling(Node* sibling) { m_nextSibling = sibling; }
+
+	Scene* m_scene;
 
 	Node* m_firstChild;
 	Node* m_parent;

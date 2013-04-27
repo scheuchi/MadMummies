@@ -26,23 +26,23 @@ public:
 		AttribUv3
 	};
 
-	VertexBufferObject(float* positionBuffer, float* normalBuffer, unsigned int* indexBuffer,
-		float* uvBuffer, unsigned int vertexCount, unsigned int indexCount);
+	VertexBufferObject(float* positionBuffer, float* normalBuffer, float* uvBuffer,
+		unsigned int* indexBuffer, unsigned int vertexCount, unsigned int indexCount);
 	virtual ~VertexBufferObject();
 
 	virtual void UploadToVram();
 	virtual void UnloadFromVram();
 
-	GLuint GetAttributeHandle(enum Attribute attribute);
-	GLuint GetIndexBufferHandle() { return m_indexBufferHandle; }
+	bool GetAttributeHandle(enum Attribute attribute, GLuint& handle);
+	bool GetIndexBufferHandle(GLuint& handle);
 
 	unsigned int GetVertexIndexCount() { return m_indexCount; }
 
 private:
-	GLuint m_positionBufferHandle;
-	GLuint m_normalBufferHandle;
-	GLuint m_uvBufferHandle;
-	GLuint m_indexBufferHandle;
+	int m_positionBufferHandle;
+	int m_normalBufferHandle;
+	int m_uvBufferHandle;
+	int m_indexBufferHandle;
 
 	float* m_positionBuffer;
 	float* m_normalBuffer;

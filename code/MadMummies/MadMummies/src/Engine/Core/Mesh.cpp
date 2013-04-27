@@ -18,7 +18,6 @@ Mesh::~Mesh()
 void Mesh::Update(double deltaT)
 {
 	Base::Update(deltaT);
-	std::cout << "Mesh" << std::endl;
 }
 
 void Mesh::Render()
@@ -28,6 +27,16 @@ void Mesh::Render()
 	if(m_shader != 0) {
 		m_shader->Activate();
 	}
+	/*
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	glDrawBuffers(2, buffers);
+	*/
+
+	//---------------------- uniforms
+	//GLint mvpLocation = m_shader->GetUniformLocation("mvp");
+	//glUniform1i(location, (*itr)->GetTextureUnit()); 
+	//---------------------- uniforms
 	
 	int i = 0;
 	std::stringstream strIndex;
@@ -39,8 +48,15 @@ void Mesh::Render()
 		glUniform1i(location, (*itr)->GetTextureUnit()); 
 	}
  
-	glBindVertexArray(*m_vaoHandle); 
-	glDrawElements(GL_TRIANGLES, m_vertexBufferObject->GetVertexIndexCount(), GL_UNSIGNED_INT, 0); 
+	if (m_vertexBufferObject != 0) {
+		glBindVertexArray(m_vaoHandle); 
+		glDrawElements(GL_TRIANGLES, m_vertexBufferObject->GetVertexIndexCount(), GL_UNSIGNED_INT, 0); 
+	}
+
+	if(m_shader != 0) {
+		m_shader->Deactivate();
+	}
+
 	glBindVertexArray(0);
 	glUseProgram(0);
 }
@@ -56,33 +72,44 @@ void Mesh::UploadToVram()
 		(*itr)->UploadToVram();
 	}
 
-	// (2) create Vertex Array Object (VAO)
-	m_vaoHandle = new GLuint;
-	glGenVertexArrays(1, m_vaoHandle);
-	glBindVertexArray(*m_vaoHandle);
+	if (m_vertexBufferObject != 0) {
+
+		m_vertexBufferObject->UploadToVram();
+
+		glGenVertexArrays(1, &m_vaoHandle);
+		glBindVertexArray(m_vaoHandle);
+
+		GLuint handle = 0;
+		if (m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribPosition0, handle)) {
+			glBindBuffer(GL_ARRAY_BUFFER, handle);
+			GLint positionIndex = m_shader->GetAttributeLocation("position");
+			glEnableVertexAttribArray(positionIndex);
+			glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
  
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribPosition0));
-	GLint positionIndex = m_shader->GetAttributeLocation("position");
-	glEnableVertexAttribArray(positionIndex);
-	glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		if (m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribNormal0, handle)) {
+			glBindBuffer(GL_ARRAY_BUFFER, handle);
+			GLint normalIndex = m_shader->GetAttributeLocation("normal");
+			glEnableVertexAttribArray(normalIndex);
+			glVertexAttribPointer(normalIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+
+		if (m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribUv0, handle)) {
+			glBindBuffer(GL_ARRAY_BUFFER, handle);
+			GLint uvIndex = m_shader->GetAttributeLocation("uv");
+			glEnableVertexAttribArray(uvIndex);
+			glVertexAttribPointer(uvIndex, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		}
  
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribNormal0));
-	GLint normalIndex = m_shader->GetAttributeLocation("normal");
-	glEnableVertexAttribArray(normalIndex);
-	glVertexAttribPointer(normalIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		if (m_vertexBufferObject->GetIndexBufferHandle(handle)) {
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
+		}
  
-	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribUv0));
-	GLint uvIndex = m_shader->GetAttributeLocation("uv");
-	glEnableVertexAttribArray(uvIndex);
-	glVertexAttribPointer(uvIndex, 2, GL_FLOAT, GL_FALSE, 0, 0);
- 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vertexBufferObject->GetIndexBufferHandle());
- 
-	// (3) clean up!
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	
+		// (3) clean up!
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}	
 
 	Base::UploadToVram();
 }
@@ -98,6 +125,9 @@ void Mesh::UnloadFromVram()
 		(*itr)->UnloadFromVram();
 	}
 
-	glDeleteVertexArrays(1, m_vaoHandle);
+	if (m_vertexBufferObject != 0) {
+		// todo: cleanup
+		glDeleteVertexArrays(1, &m_vaoHandle);		
+	}
 	Base::UnloadFromVram();
 }

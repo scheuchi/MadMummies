@@ -29,7 +29,13 @@ void Game::Update(double deltaT)
 
 void Game::Render()
 {
-	m_traverser->Traverse(m_scene, NodeTraverser::RenderNode, 0);
+	const std::vector<Camera*> cameraList = m_scene->GetCameraList();
+	std::vector<Camera*>::const_iterator it;
+	for (it = cameraList.begin(); it != cameraList.end(); ++it) {
+		Camera* cam = *it;
+		cam->Activate();
+		m_traverser->Traverse(m_scene, NodeTraverser::RenderNode, 0);
+	}	
 }
 
 void Game::Cleanup()

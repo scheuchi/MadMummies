@@ -22,7 +22,6 @@ Light::~Light()
 void Light::Update(double deltaT)
 {
 	Base::Update(deltaT);
-	std::cout << "Light" << std::endl;
 }
 
 void Light::Render()

@@ -2,11 +2,12 @@
 #include <iostream>
 
 
-VertexBufferObject::VertexBufferObject(float* positionBuffer, float* normalBuffer, unsigned int* indexBuffer,
-	float* uvBuffer, unsigned int vertexCount, unsigned int indexCount) : 
-		m_positionBufferHandle(0), m_normalBufferHandle(0), m_uvBufferHandle(0), m_indexBufferHandle(0),
-		m_positionBuffer(0), m_normalBuffer(0), m_indexBuffer(0), m_uvBuffer(0),
-		m_vertexCount(0), m_indexCount(0)
+VertexBufferObject::VertexBufferObject(
+		float* positionBuffer, float* normalBuffer, float* uvBuffer, 
+		unsigned int* indexBuffer, unsigned int vertexCount, unsigned int indexCount) : 
+		m_positionBufferHandle(-1), m_normalBufferHandle(-1), m_uvBufferHandle(-1), m_indexBufferHandle(-1),
+		m_positionBuffer(positionBuffer), m_normalBuffer(normalBuffer), m_uvBuffer(uvBuffer), m_indexBuffer(indexBuffer),
+		m_vertexCount(vertexCount), m_indexCount(indexCount)
 {
 }
 
@@ -20,31 +21,30 @@ void VertexBufferObject::UploadToVram()
 	if (IsUploaded()) {
 		return;
 	}
- 
-	// (1) generate vertex buffers and upload data, once for each attribute
+
 	if (m_positionBuffer != 0) {
-		glGenBuffers(1, &m_positionBufferHandle);
+		glGenBuffers(1, (GLuint*)&m_positionBufferHandle);
 		glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferHandle);
 		glBufferData(GL_ARRAY_BUFFER, m_vertexCount * 3 * sizeof(float), m_positionBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
  
 	if (m_normalBuffer != 0) {
-		glGenBuffers(1, &m_normalBufferHandle);
+		glGenBuffers(1, (GLuint*)&m_normalBufferHandle);
 		glBindBuffer(GL_ARRAY_BUFFER, m_normalBufferHandle);
 		glBufferData(GL_ARRAY_BUFFER, m_vertexCount* 3 * sizeof(float), m_normalBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
  
-	if (m_uvBufferHandle != 0) {
-		glGenBuffers(1, &m_uvBufferHandle);
+	if (m_uvBuffer != 0) {
+		glGenBuffers(1, (GLuint*)&m_uvBufferHandle);
 		glBindBuffer(GL_ARRAY_BUFFER, m_uvBufferHandle);
 		glBufferData(GL_ARRAY_BUFFER, m_vertexCount * 2 * sizeof(float), m_uvBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	if (m_indexBuffer != 0) {
-		glGenBuffers(1, &m_indexBufferHandle);
+		glGenBuffers(1, (GLuint*)&m_indexBufferHandle);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferHandle);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indexCount * sizeof(unsigned int), m_indexBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -56,29 +56,51 @@ void VertexBufferObject::UploadToVram()
 void VertexBufferObject::UnloadFromVram()
 {
 	if (IsUploaded()) {
-		glDeleteBuffers(1, &m_positionBufferHandle);		
-		glDeleteBuffers(1, &m_normalBufferHandle);
-		glDeleteBuffers(1, &m_uvBufferHandle);
-		glDeleteBuffers(1, &m_indexBufferHandle);
+		if (m_positionBufferHandle != -1) {
+			glDeleteBuffers(1, (GLuint*)&m_positionBufferHandle);	
+		}
+		if (m_normalBufferHandle != -1) {
+			glDeleteBuffers(1, (GLuint*)&m_normalBufferHandle);
+		}
+		if (m_uvBufferHandle != -1) {
+			glDeleteBuffers(1, (GLuint*)&m_uvBufferHandle);
+		}
+		if (m_indexBufferHandle != -1) {
+			glDeleteBuffers(1, (GLuint*)&m_indexBufferHandle);
+		}
 		Base::UnloadFromVram();
 	}	
 }
 
-GLuint VertexBufferObject::GetAttributeHandle(enum Attribute attribute)
+bool VertexBufferObject::GetAttributeHandle(enum Attribute attribute, GLuint& handle)
 {
-	GLuint attribHandle = 0;
+	int attribHandle = -1;
 
 	switch(attribute) {
 		case AttribPosition0:
-			attribHandle = m_normalBufferHandle;
+			attribHandle = m_positionBufferHandle;
 			break;
 		case AttribNormal0:
 			attribHandle = m_normalBufferHandle;
 			break;
 		case AttribUv0:
-			attribHandle = m_normalBufferHandle;
+			attribHandle = m_uvBufferHandle;
 			break;		
 	}
+	if (attribHandle != -1) {
+		handle = attribHandle;
+		return true;
+	} else {
+		return false;
+	}
+}
 
-	return attribHandle;
+bool VertexBufferObject::GetIndexBufferHandle(GLuint& handle)
+{
+	if (m_indexBufferHandle != -1) {
+		handle = m_indexBufferHandle;
+		return true;
+	} else {
+		return false;
+	}
 }

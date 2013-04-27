@@ -13,7 +13,6 @@ Cube::~Cube()
 void Cube::Update(double deltaT)
 {
 	Base::Update(deltaT);
-	std::cout << "Cube" << std::endl;
 	m_angleX = static_cast<float>((m_angleX + 60.0f * deltaT)) / 360.0f;
 }
 

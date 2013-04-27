@@ -8,7 +8,7 @@ class Transformable : public Node
 
 public:
 	Transformable();
-	virtual ~Transformable();	
+	virtual ~Transformable();
 
 	virtual void Update(double deltaT);
 	virtual void Render();

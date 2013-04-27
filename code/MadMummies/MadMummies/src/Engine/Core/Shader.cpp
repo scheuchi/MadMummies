@@ -37,7 +37,8 @@ void Shader::UnloadFromVram()
 
 void Shader::Activate()
 {
-	if (IsUploaded() && (!IsActive())) {		
+	if (IsUploaded() && (!IsActive())) {
+		glUseProgram(m_handleShaderProgram);
 		Base::Activate();
 	}
 }
@@ -45,6 +46,7 @@ void Shader::Activate()
 void Shader::Deactivate()
 {
 	if (IsActive()) {
+		glUseProgram(0);
 		Base::Deactivate();
 	}
 }
