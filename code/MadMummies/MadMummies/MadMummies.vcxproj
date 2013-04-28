@@ -105,6 +105,7 @@
     <ClCompile Include="src\Engine\Loader\Loader.cpp" />
     <ClCompile Include="src\Engine\Util\UserInputServer.cpp" />
     <ClCompile Include="src\Engine\Util\Util.cpp" />
+    <ClCompile Include="src\Game\Behavior\CameraBehavior.cpp" />
     <ClCompile Include="src\Game\Behavior\MeshBehavior.cpp" />
     <ClCompile Include="src\Game\Loader\DummyLoader.cpp" />
     <ClCompile Include="src\Game\Loader\FileLoader.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="src\Engine\Loader\Loader.h" />
     <ClInclude Include="src\Engine\Util\UserInputServer.h" />
     <ClInclude Include="src\Engine\Util\Util.h" />
+    <ClInclude Include="src\Game\Behavior\CameraBehavior.h" />
     <ClInclude Include="src\Game\Behavior\MeshBehavior.h" />
     <ClInclude Include="src\Game\Loader\DummyLoader.h" />
     <ClInclude Include="src\Game\Loader\FileLoader.h" />

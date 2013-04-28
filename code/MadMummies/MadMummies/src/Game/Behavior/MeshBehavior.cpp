@@ -18,10 +18,10 @@ void MeshBehavior::OnSetNode()
 	m_transformable = dynamic_cast<Transformable*>(Base::GetNode());
 
 	if (m_transformable != 0) {
-		UserInputServer::GetInstance()->RegisterKeyInputListener(this, GLFW_KEY_LEFT);
-		UserInputServer::GetInstance()->RegisterKeyInputListener(this, GLFW_KEY_RIGHT);
-		UserInputServer::GetInstance()->RegisterKeyInputListener(this, GLFW_KEY_UP);
-		UserInputServer::GetInstance()->RegisterKeyInputListener(this, GLFW_KEY_DOWN);
+		UserInputServer::GetInstance()->RegisterKeyInputListener(this, 'A');
+		UserInputServer::GetInstance()->RegisterKeyInputListener(this, 'S');
+		UserInputServer::GetInstance()->RegisterKeyInputListener(this, 'D');
+		UserInputServer::GetInstance()->RegisterKeyInputListener(this, 'W');
 	}
 }
 
@@ -31,19 +31,19 @@ void MeshBehavior::Update(double deltaT)
 		return;
 	}
 	if (m_leftPressed) {
-		m_transformable->Rotate(glm::vec3(0.0f, -5.0f, 0.0f));
+		m_transformable->Rotate(glm::vec3(0.0f, 5.0f, 0.0f));
 		m_leftPressed = false;
 	}
 	if (m_rightPressed) {
-		m_transformable->Rotate(glm::vec3(0.0f, 2.5f, 0.0f));
+		m_transformable->Rotate(glm::vec3(0.0f, -5.0f, 0.0f));
 		m_rightPressed = false;
 	}
 	if (m_upPressed) {
-		m_transformable->Scale(glm::vec3(1.2f, 1.2f, 1.2f));
+		m_transformable->Translate(glm::vec3(0.0f, 0.0f, -0.2f));
 		m_upPressed = false;
 	}
 	if (m_downPressed) {
-		m_transformable->Scale(glm::vec3(1.0f/1.2f, 1.0f/1.2f, 1.0f/1.2f));
+		m_transformable->Translate(glm::vec3(0.0f, 0.0f, 0.2f));
 		m_downPressed = false;
 	}
 }
@@ -51,16 +51,16 @@ void MeshBehavior::Update(double deltaT)
 void MeshBehavior::KeyPressed(int key)
 {
 	switch(key) {
-	case GLFW_KEY_LEFT:
+	case 'A':
 		m_leftPressed = true;
 		break;
-	case GLFW_KEY_RIGHT:
+	case 'D':
 		m_rightPressed = true;
 		break;
-	case GLFW_KEY_UP:
+	case 'W':
 		m_upPressed = true;
 		break;
-	case GLFW_KEY_DOWN:
+	case 'S':
 		m_downPressed = true;
 		break;
 	}

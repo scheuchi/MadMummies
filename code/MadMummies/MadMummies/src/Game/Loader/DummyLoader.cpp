@@ -8,6 +8,8 @@
 #include "Engine/Core/Mesh.h"
 
 #include "Game/Behavior/MeshBehavior.h"
+#include "Game/Behavior/CameraBehavior.h"
+
 
 
 DummyLoader::DummyLoader()
@@ -25,6 +27,7 @@ Scene* DummyLoader::LoadScene(std::string sceneName)
 
 	Mesh* mesh = new Mesh();
 	mesh->SetScene(scene);
+	mesh->SetPosition(glm::vec3(0.0f, 0.0f, -20.0f));
 	mesh->SetBehavior(new MeshBehavior());
 
 	Shader* shader = new Shader();
@@ -33,20 +36,27 @@ Scene* DummyLoader::LoadScene(std::string sceneName)
 	mesh->SetShader(shader);
 
 	float* positionBuffer = new float[9];
-	positionBuffer[0] = -0.3f; positionBuffer[1] = -0.4f; positionBuffer[2] = 0.0f;
-	positionBuffer[3] = 0.5f; positionBuffer[4] = -0.4f; positionBuffer[5] = 0.0f;
-	positionBuffer[6] = 0.0f; positionBuffer[7] = 0.3f; positionBuffer[8] = 0.0f;
-	//glVertex3f(-5.0f, -4.0f, 0.0f); 
-	//glVertex3f(5.0f, -4.0f, 0.0f); 
-	//glVertex3f(0.0f, 4.5f, 0.0f);
+	positionBuffer[0] = -20.0f; positionBuffer[1] = 0.0f; positionBuffer[2] = 0.0f;
+	positionBuffer[3] = 20.0f; positionBuffer[4] = 0.0f; positionBuffer[5] = 0.0f;
+	positionBuffer[6] = 0.0f; positionBuffer[7] = 10.0f; positionBuffer[8] = 0.0f;
 	unsigned int * indexBuffer = 0;
-	//unsigned int * indexBuffer = new unsigned int[3];
-	//indexBuffer[0] = 0; indexBuffer[1] = 1; indexBuffer[2] = 2;
 	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, 0, 0, indexBuffer, 3, 0);
 	mesh->SetVertexBufferObject(vbo);
 
 	scene->AddChild(mesh);
 	
+	Camera* camera = new Camera();
+	camera->SetScene(scene);
+	camera->SetViewport(0, 0, 1024, 768);
+	camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	camera->SetLookAtVector(glm::vec3(0.0f, 0.0f, -1.0f));
+	camera->SetUpVector(glm::vec3(0.0f, 1.0f, 0.0f));
+	camera->SetNearPlane(0.1f);
+	camera->SetFarPlane(1000.0f);
+	camera->SetFieldOfView(60.0f);
+	camera->SetBehavior(new CameraBehavior);
+	scene->AddChild(camera);
+
 	/*
 	Cube* cube = new Cube();
 	scene->AddChild(cube);
@@ -54,11 +64,6 @@ Scene* DummyLoader::LoadScene(std::string sceneName)
 	Light* light = new Light();
 	scene->AddChild(light);
 	*/
-
-	Camera* camera = new Camera();
-	camera->SetScene(scene);
-	camera->SetViewport(0, 0, 500, 500);
-	scene->AddChild(camera);
 
 	return scene;
 }

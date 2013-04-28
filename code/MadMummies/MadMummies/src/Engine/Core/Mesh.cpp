@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include "Scene.h"
+
 #include <iostream>
 #include <sstream>
 
@@ -30,7 +32,10 @@ void Mesh::Render()
 	if(m_shader != 0) {
 		m_shader->Activate();
 		GLint mvpLocation = m_shader->GetUniformLocation("mvp");
-		glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(GetModelMatrix()));
+		glm::mat4& projectionMatrix = Base::GetScene()->GetActiveCamera()->GetProjectionMatrix();
+		glm::mat4& viewMatrix = Base::GetScene()->GetActiveCamera()->GetViewMatrix();
+		glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * GetModelMatrix();
+		glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
 	}
 	
 	int i = 0;
