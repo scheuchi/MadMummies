@@ -7,6 +7,10 @@
 #include "Engine/Core/Shader.h"
 #include "Engine/Core/Mesh.h"
 
+#include <assimp/Importer.hpp> // C++ importer interface
+#include <assimp/scene.h> // Output data structure
+#include <assimp/postprocess.h> // Post processing flags
+
 
 FileLoader::FileLoader()
 {
@@ -18,9 +22,42 @@ FileLoader::~FileLoader()
 
 Scene* FileLoader::LoadScene(std::string sceneName)
 {
+	Assimp::Importer importer;
+
+	const aiScene* impScene = importer.ReadFile(".\\resources\\meshes\\rubberDuck.dae", aiProcess_Triangulate);
+	if(!impScene) {
+		std::cout << importer.GetErrorString() << std::endl;
+		exit(-1);
+	}
+
+	unsigned int noOfVertices = impScene->mMeshes[0]->mNumVertices;
+
+	//create vertex position array
+	float* positionBuffer = new float[noOfVertices*3];
+	float* normalBuffer = new float[noOfVertices*3];
+	float* uvBuffer = new float[noOfVertices*3];
+	
+	for(int i = 0; i < noOfVertices; i++) {		
+		positionBuffer[i*3] = impScene->mMeshes[0]->mVertices[i].x;
+		positionBuffer[i*3+1] = impScene->mMeshes[0]->mVertices[i].y;
+		positionBuffer[i*3+2] = impScene->mMeshes[0]->mVertices[i].z;
+		normalBuffer[i*3] = impScene->mMeshes[0]->mNormals[i].x;
+		normalBuffer[i*3+1] = impScene->mMeshes[0]->mNormals[i].y;
+		normalBuffer[i*3+2] = impScene->mMeshes[0]->mNormals[i].z;
+		uvBuffer[i*3] = impScene->mMeshes[0]->mTextureCoords[1][i].x;
+		uvBuffer[i*3+1] = impScene->mMeshes[0]->mTextureCoords[1][i].y;
+		uvBuffer[i*3+2] = impScene->mMeshes[0]->mTextureCoords[1][i].z;
+	}
+
+	aiMesh* newMesh = impScene->mMeshes[0];
+
 	Scene* scene = new Scene();
 
 	Mesh* mesh = new Mesh();
+	
+	mesh->SetVertexBufferObject(new VertexBufferObject(positionBuffer, normalBuffer, 0, uvBuffer, noOfVertices, 0));
+	
+	
 	Shader* shader = new Shader();
 	shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
 	shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
