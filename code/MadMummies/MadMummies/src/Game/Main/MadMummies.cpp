@@ -119,7 +119,7 @@ void MainLoop()
 
 int main(int argc, char **argv)
 {
-	//OpenWindow(1024, 768);
+	OpenWindow(1024, 768);
 	MainLoop();
 	return 0;
 }

@@ -48,6 +48,7 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	float* normalBuffer = new float[noOfVertices*3];
 	float* uvBuffer = new float[noOfVertices*2];
 
+
 	
 	for(unsigned int i = 0; i < noOfVertices; i++) {		
 		positionBuffer[i*3] = impScene->mMeshes[0]->mVertices[i].x;
@@ -59,7 +60,7 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 		uvBuffer[i*2] = impScene->mMeshes[0]->mTextureCoords[0][i].x;
 		uvBuffer[i*2+1] = impScene->mMeshes[0]->mTextureCoords[0][i].y;
 	}
-
+	
 	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, normalBuffer, uvBuffer, 0, noOfVertices, 0);
 	mesh->SetVertexBufferObject(vbo);
 

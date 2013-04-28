@@ -5,6 +5,9 @@
 
 #include "glew.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 Mesh::Mesh() : m_shader(0), m_vecTextures(), m_vertexBufferObject(0), m_vaoHandle(0)
 {
@@ -26,17 +29,9 @@ void Mesh::Render()
  
 	if(m_shader != 0) {
 		m_shader->Activate();
+		GLint mvpLocation = m_shader->GetUniformLocation("mvp");
+		glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(GetModelMatrix()));
 	}
-	/*
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-	glDrawBuffers(2, buffers);
-	*/
-
-	//---------------------- uniforms
-	//GLint mvpLocation = m_shader->GetUniformLocation("mvp");
-	//glUniform1i(location, (*itr)->GetTextureUnit()); 
-	//---------------------- uniforms
 	
 	int i = 0;
 	std::stringstream strIndex;

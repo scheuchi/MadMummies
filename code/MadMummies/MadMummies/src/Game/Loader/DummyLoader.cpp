@@ -7,6 +7,8 @@
 #include "Engine/Core/Shader.h"
 #include "Engine/Core/Mesh.h"
 
+#include "Game/Behavior/MeshBehavior.h"
+
 
 DummyLoader::DummyLoader()
 {
@@ -23,6 +25,7 @@ Scene* DummyLoader::LoadScene(std::string sceneName)
 
 	Mesh* mesh = new Mesh();
 	mesh->SetScene(scene);
+	mesh->SetBehavior(new MeshBehavior());
 
 	Shader* shader = new Shader();
 	shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
