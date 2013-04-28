@@ -7,6 +7,10 @@
 #include "Engine/Core/Shader.h"
 #include "Engine/Core/Mesh.h"
 
+#include <assimp/Importer.hpp> // C++ importer interface
+#include <assimp/scene.h> // Output data structure
+#include <assimp/postprocess.h> // Post processing flags
+
 
 FileLoader::FileLoader()
 {
@@ -24,22 +28,40 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	Mesh* mesh = new Mesh();
 	mesh->SetScene(scene);
 
+	Assimp::Importer importer;
+	
 	Shader* shader = new Shader();
 	shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
 	shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
 	mesh->SetShader(shader);
 
-	float* positionBuffer = new float[9];
-	positionBuffer[0] = -0.3f; positionBuffer[1] = -0.4f; positionBuffer[2] = 0.0f;
-	positionBuffer[3] = 0.5f; positionBuffer[4] = -0.4f; positionBuffer[5] = 0.0f;
-	positionBuffer[6] = 0.0f; positionBuffer[7] = 0.3f; positionBuffer[8] = 0.0f;
-	//glVertex3f(-5.0f, -4.0f, 0.0f); 
-	//glVertex3f(5.0f, -4.0f, 0.0f); 
-	//glVertex3f(0.0f, 4.5f, 0.0f);
-	unsigned int * indexBuffer = 0;
-	//unsigned int * indexBuffer = new unsigned int[3];
-	//indexBuffer[0] = 0; indexBuffer[1] = 1; indexBuffer[2] = 2;
-	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, 0, 0, indexBuffer, 3, 0);
+	const aiScene* impScene = importer.ReadFile(".\\resources\\meshes\\rubberDuck.dae", aiProcess_Triangulate);
+	if(impScene == NULL) {
+		std::cout << importer.GetErrorString() << std::endl;
+		exit(-1);
+	}
+	
+	unsigned int noOfVertices = impScene->mMeshes[0]->mNumVertices;
+
+	//create vertex position array
+	float* positionBuffer = new float[noOfVertices*3];
+	float* normalBuffer = new float[noOfVertices*3];
+	float* uvBuffer = new float[noOfVertices*2];
+
+	
+	for(unsigned int i = 0; i < noOfVertices; i++) {		
+		positionBuffer[i*3] = impScene->mMeshes[0]->mVertices[i].x;
+		positionBuffer[i*3+1] = impScene->mMeshes[0]->mVertices[i].y;
+		positionBuffer[i*3+2] = impScene->mMeshes[0]->mVertices[i].z;
+		normalBuffer[i*3] = impScene->mMeshes[0]->mNormals[i].x;
+		normalBuffer[i*3+1] = impScene->mMeshes[0]->mNormals[i].y;
+		normalBuffer[i*3+2] = impScene->mMeshes[0]->mNormals[i].z;
+		uvBuffer[i*2] = impScene->mMeshes[0]->mTextureCoords[0][i].x;
+		uvBuffer[i*2+1] = impScene->mMeshes[0]->mTextureCoords[0][i].y;
+	}
+
+	//(float* positionBuffer, float* normalBuffer, unsigned int* indexBuffer, float* uvBuffer, unsigned int vertexCount, unsigned int indexCount)
+	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, normalBuffer, 0, uvBuffer, noOfVertices, 0);
 	mesh->SetVertexBufferObject(vbo);
 
 	scene->AddChild(mesh);
