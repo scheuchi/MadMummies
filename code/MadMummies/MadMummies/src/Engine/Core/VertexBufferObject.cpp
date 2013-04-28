@@ -9,6 +9,16 @@ VertexBufferObject::VertexBufferObject(
 		m_positionBuffer(positionBuffer), m_normalBuffer(normalBuffer), m_uvBuffer(uvBuffer), m_indexBuffer(indexBuffer),
 		m_vertexCount(vertexCount), m_indexCount(indexCount)
 {
+	if (((m_indexBuffer == 0) && (m_indexCount != 0)) || ((m_indexBuffer != 0) && (m_indexCount == 0))) {
+		std::cout << "Invalid initialization of indexed vertex buffer." << std::endl;
+		system("PAUSE");
+		exit(-1);
+	}
+	if (((m_positionBuffer == 0) && (m_vertexCount != 0)) || ((m_positionBuffer != 0) && (m_vertexCount == 0))) {
+		std::cout << "Invalid initialization of position vertex buffer." << std::endl;
+		system("PAUSE");
+		exit(-1);
+	}
 }
 
 VertexBufferObject::~VertexBufferObject()

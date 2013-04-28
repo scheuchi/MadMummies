@@ -28,6 +28,9 @@ public:
 	void Scale(glm::vec3& scale);
 
 	glm::mat4& GetModelMatrix();
+	
+	glm::mat4& GetLocalMatrix();
+	void SetLocalMatrix(glm::mat4& localMatrix);
 
 private:
 	glm::mat4 m_localMatrix;
