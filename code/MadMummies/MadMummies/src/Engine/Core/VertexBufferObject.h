@@ -36,7 +36,9 @@ public:
 	bool GetAttributeHandle(enum Attribute attribute, GLuint& handle);
 	bool GetIndexBufferHandle(GLuint& handle);
 
+	bool IsIndexed() { return m_indexBuffer != 0; }
 	unsigned int GetVertexIndexCount() { return m_indexCount; }
+	unsigned int GetVertexCount() { return m_vertexCount; }
 
 private:
 	int m_positionBufferHandle;

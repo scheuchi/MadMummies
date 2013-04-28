@@ -36,9 +36,10 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	//glVertex3f(-5.0f, -4.0f, 0.0f); 
 	//glVertex3f(5.0f, -4.0f, 0.0f); 
 	//glVertex3f(0.0f, 4.5f, 0.0f);
-	unsigned int * indexBuffer = new unsigned int[3];
-	indexBuffer[0] = 0; indexBuffer[1] = 1; indexBuffer[2] = 2;
-	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, 0, 0, indexBuffer, 3, 3);
+	unsigned int * indexBuffer = 0;
+	//unsigned int * indexBuffer = new unsigned int[3];
+	//indexBuffer[0] = 0; indexBuffer[1] = 1; indexBuffer[2] = 2;
+	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, 0, 0, indexBuffer, 3, 0);
 	mesh->SetVertexBufferObject(vbo);
 
 	scene->AddChild(mesh);

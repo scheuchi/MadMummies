@@ -50,7 +50,11 @@ void Mesh::Render()
  
 	if (m_vertexBufferObject != 0) {
 		glBindVertexArray(m_vaoHandle); 
-		glDrawElements(GL_TRIANGLES, m_vertexBufferObject->GetVertexIndexCount(), GL_UNSIGNED_INT, 0); 
+		if (m_vertexBufferObject->IsIndexed()) {
+			glDrawElements(GL_TRIANGLES, m_vertexBufferObject->GetVertexIndexCount(), GL_UNSIGNED_INT, 0);
+		} else {
+			glDrawArrays(GL_TRIANGLES, 0, m_vertexBufferObject->GetVertexCount());
+		}
 	}
 
 	if(m_shader != 0) {
