@@ -34,6 +34,7 @@ Scene* DummyLoader::LoadScene(std::string sceneName)
 	shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
 	shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
 	mesh->SetShader(shader);
+	// --------------------------------------------
 
 	float* positionBuffer = new float[9];
 	positionBuffer[0] = -20.0f; positionBuffer[1] = 0.0f; positionBuffer[2] = 0.0f;
@@ -41,8 +42,9 @@ Scene* DummyLoader::LoadScene(std::string sceneName)
 	positionBuffer[6] = 0.0f; positionBuffer[7] = 10.0f; positionBuffer[8] = 0.0f;
 	unsigned int * indexBuffer = 0;
 	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, 0, 0, indexBuffer, 3, 0);
-	mesh->SetVertexBufferObject(vbo);
 
+	// --------------------------------------------
+	mesh->SetVertexBufferObject(vbo);
 	scene->AddChild(mesh);
 	
 	Camera* camera = new Camera();

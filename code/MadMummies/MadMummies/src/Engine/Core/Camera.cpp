@@ -49,7 +49,7 @@ void Camera::UpdateModelMatrix()
 	glm::vec3 modelPosition(modelMatrix[3][0],
 							modelMatrix[3][1],
 							modelMatrix[3][2]);
-	glm::vec4 modelLookAtVector = modelMatrix * glm::vec4(m_lookAtVector, 0.0f);
+	glm::vec4 modelLookAtVector = modelMatrix * glm::vec4(m_lookAtVector, 1.0f);
 	glm::vec3 lookAt = glm::vec3(modelLookAtVector.x, modelLookAtVector.y, modelLookAtVector.z);
 
 	m_viewMatrix = glm::lookAt(

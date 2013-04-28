@@ -39,11 +39,11 @@ void CameraBehavior::Update(double deltaT)
 		m_rightPressed = false;
 	}
 	if (m_upPressed) {
-		m_camera->Translate(glm::vec3(0.0f, 0.0f, -0.2f));
+		m_camera->Translate(glm::vec3(0.0f, 0.0f, -2.0f));
 		m_upPressed = false;
 	}
 	if (m_downPressed) {
-		m_camera->Translate(glm::vec3(0.0f, 0.0f, 0.2f));
+		m_camera->Translate(glm::vec3(0.0f, 0.0f, 2.0f));
 		m_downPressed = false;
 	}
 }
