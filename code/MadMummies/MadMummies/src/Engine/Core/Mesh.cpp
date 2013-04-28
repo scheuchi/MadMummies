@@ -56,9 +56,7 @@ void Mesh::Render()
 	if(m_shader != 0) {
 		m_shader->Deactivate();
 	}
-
 	glBindVertexArray(0);
-	glUseProgram(0);
 }
 
 void Mesh::UploadToVram()
