@@ -60,8 +60,7 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 		uvBuffer[i*2+1] = impScene->mMeshes[0]->mTextureCoords[0][i].y;
 	}
 
-	//(float* positionBuffer, float* normalBuffer, unsigned int* indexBuffer, float* uvBuffer, unsigned int vertexCount, unsigned int indexCount)
-	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, normalBuffer, 0, uvBuffer, noOfVertices, 0);
+	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, normalBuffer, uvBuffer, 0, noOfVertices, 0);
 	mesh->SetVertexBufferObject(vbo);
 
 	scene->AddChild(mesh);
