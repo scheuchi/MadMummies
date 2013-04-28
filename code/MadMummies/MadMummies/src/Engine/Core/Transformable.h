@@ -15,16 +15,16 @@ public:
 	virtual void Update(double deltaT);
 	virtual void Render();
 
-	void SetRotation(glm::vec3& rotation, glm::float_t angle);
-	void GetRotation(glm::vec3& rotation, glm::float_t& angle);
-	void Rotate(glm::vec3& rotate, glm::float_t angle);
+	void SetRotation(glm::vec3& rotation);
+	glm::vec3& GetRotation();
+	void Rotate(glm::vec3& rotate);
 
-	void SetTranslation(glm::vec3& tranlsation);
-	glm::vec3& GetTranslation();
+	void SetPosition(glm::vec3& position);
+	glm::vec3& GetPosition();
 	void Translate(glm::vec3& translate);
 
-	void SetScaling(glm::vec3& scaling);
-	glm::vec3& GetScaling();
+	void SetScale(glm::vec3& scale);
+	glm::vec3& GetScale();
 	void Scale(glm::vec3& scale);
 
 	glm::mat4& GetModelMatrix();
@@ -39,8 +39,7 @@ private:
 	bool m_isModelMatrixInvalid;
 	
 	glm::vec3 m_rotation;
-	glm::float_t m_rotationAngle;
-	glm::vec3 m_translation;
-	glm::vec3 m_scaling;
+	glm::vec3 m_position;
+	glm::vec3 m_scale;
 };
 

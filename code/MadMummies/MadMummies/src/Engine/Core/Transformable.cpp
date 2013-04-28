@@ -2,10 +2,11 @@
 
 #define GLM_MESSAGES
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 
 Transformable::Transformable() : m_localMatrix(1.0f), m_modelMatrix(1.0f),
-	m_rotation(0.0f, 0.0f, 0.0f), m_rotationAngle(0.0f), m_translation(0.0f, 0.0f, 0.0f), m_scaling(1.0f, 1.0f, 1.0f),
+	m_rotation(0.0f, 0.0f, 0.0f), m_position(0.0f, 0.0f, 0.0f), m_scale(1.0f, 1.0f, 1.0f),
 	m_isLocalMatrixInvalid(true), m_isModelMatrixInvalid(true)
 {
 }
@@ -24,44 +25,49 @@ void Transformable::Render()
 	Base::Render();
 }
 
-void Transformable::SetRotation(glm::vec3& rotation, glm::float_t angle)
+void Transformable::SetRotation(glm::vec3& rotation)
 {
+	m_rotation = rotation;
 }
 
-void Transformable::GetRotation(glm::vec3& rotation, glm::float_t& angle)
+glm::vec3& Transformable::GetRotation()
 {
-	rotation = m_rotation; 
-	angle = m_rotationAngle; 
+	return m_rotation;
 }
 
-void Transformable::Rotate(glm::vec3& rotate, glm::float_t angle)
+void Transformable::Rotate(glm::vec3& rotation)
 {
+	m_rotation += rotation;
 }
 
-void Transformable::SetTranslation(glm::vec3& tranlsation)
+void Transformable::SetPosition(glm::vec3& position)
 {
+	m_position = position;
 }
 
-glm::vec3& Transformable::GetTranslation()
+glm::vec3& Transformable::GetPosition()
 {
-	return m_translation;
+	return m_position;
 }
 
 void Transformable::Translate(glm::vec3& translate)
 {
+	m_position += translate;
 }
 
-void Transformable::SetScaling(glm::vec3& scaling)
+void Transformable::SetScale(glm::vec3& scale)
 {
+	m_scale = scale;
 }
 
-glm::vec3& Transformable::GetScaling()
+glm::vec3& Transformable::GetScale()
 {
-	return m_scaling;
+	return m_scale;
 }
 
 void Transformable::Scale(glm::vec3& scale)
 {
+	m_scale *= scale;
 }
 
 glm::mat4& Transformable::GetModelMatrix()
@@ -71,9 +77,18 @@ glm::mat4& Transformable::GetModelMatrix()
 
 glm::mat4& Transformable::GetLocalMatrix()
 {
+	if (m_isLocalMatrixInvalid) {
+		glm::mat4 translationMatrix = glm::translate(m_position);
+		glm::mat4 rotationMatrix = glm::rotate(0.0f, m_rotation);
+		glm::mat4 scaleMatrix = glm::scale(m_scale);
+		
+		m_localMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+		m_isLocalMatrixInvalid = false;
+	}	
 	return m_localMatrix;
 }
 
 void Transformable::SetLocalMatrix(glm::mat4& localMatrix)
 {
+	m_localMatrix = localMatrix;
 }
