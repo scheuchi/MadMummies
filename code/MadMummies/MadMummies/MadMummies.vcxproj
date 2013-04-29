@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Shader_BlinnPhong.cpp" />
     <ClCompile Include="src\Engine\Behavior\Behavior.cpp" />
     <ClCompile Include="src\Engine\Core\Bitmap.cpp" />
     <ClCompile Include="src\Engine\Core\Camera.cpp" />
@@ -113,6 +114,7 @@
     <ClCompile Include="src\Game\Main\MadMummies.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Shader_BlinnPhong.h" />
     <ClInclude Include="src\Engine\Behavior\Behavior.h" />
     <ClInclude Include="src\Engine\Core\Bitmap.h" />
     <ClInclude Include="src\Engine\Core\Camera.h" />
