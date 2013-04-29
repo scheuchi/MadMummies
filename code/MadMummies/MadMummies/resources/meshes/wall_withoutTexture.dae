@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset><contributor><author></author><authoring_tool>FBX COLLADA exporter</authoring_tool><comments></comments></contributor><created>2013-04-29T22:37:10Z</created><keywords></keywords><modified>2013-04-29T22:37:10Z</modified><revision></revision><subject></subject><title></title><unit meter="0.010000" name="centimeter"></unit><up_axis>Y_UP</up_axis></asset>
+  <library_materials>
+    <material id="Default_Material" name="Default_Material">
+      <instance_effect url="#Default_Material-fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="Default_Material-fx" name="Default_Material">
+      <profile_COMMON>
+        <technique sid="standard">
+          <lambert>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.500000  0.500000 0.500000 1.000000</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.500000  0.500000 0.500000 1.000000</color>
+            </diffuse>
+            <transparent opaque="RGB_ZERO">
+              <color sid="transparent">0.000000  0.000000 0.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
+            </transparency>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_geometries>
+    <geometry id="pCube2-lib" name="pCube2Mesh">
+      <mesh>
+        <source id="pCube2-POSITION">
+          <float_array id="pCube2-POSITION-array" count="24">
+-4.000000 -3.000000 1.000000
+4.000000 -3.000000 1.000000
+-4.000000 3.000000 1.000000
+4.000000 3.000000 1.000000
+-4.000000 3.000000 -1.000000
+4.000000 3.000000 -1.000000
+-4.000000 -3.000000 -1.000000
+4.000000 -3.000000 -1.000000
+</float_array>
+          <technique_common>
+            <accessor source="#pCube2-POSITION-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="pCube2-Normal0">
+          <float_array id="pCube2-Normal0-array" count="108">
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+</float_array>
+          <technique_common>
+            <accessor source="#pCube2-Normal0-array" count="36" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="pCube2-UV0">
+          <float_array id="pCube2-UV0-array" count="48">
+0.001865 0.498131
+0.001865 0.001992
+0.373970 0.001992
+0.373970 0.498131
+0.379817 0.498131
+0.379817 0.001992
+0.503851 0.001992
+0.503851 0.498131
+0.511214 0.498131
+0.511214 0.001992
+0.883319 0.001992
+0.883319 0.498131
+0.810485 0.998008
+0.810485 0.501869
+0.934520 0.501869
+0.934520 0.998008
+0.680705 0.501869
+0.804740 0.501869
+0.804740 0.873973
+0.680705 0.873973
+0.550925 0.501869
+0.674960 0.501869
+0.674960 0.873973
+0.550925 0.873973
+</float_array>
+          <technique_common>
+            <accessor source="#pCube2-UV0-array" count="24" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="pCube2-VERTEX">
+          <input semantic="POSITION" source="#pCube2-POSITION"/>
+        </vertices>
+        <triangles count="12" material="Default_Material"><input semantic="VERTEX" offset="0" source="#pCube2-VERTEX"/><input semantic="NORMAL" offset="1" source="#pCube2-Normal0"/><input semantic="TEXCOORD" offset="2" set="0" source="#pCube2-UV0"/><p> 3 0 2 2 1 3 0 2 0 3 3 2 0 4 0 1 5 1 2 6 4 3 7 5 5 8 6 2 9 4 5 10 6 4 11 7 7 12 10 6 13 11 4 14 8 7 15 10 4 16 8 5 17 9 1 18 14 0 19 15 6 20 12 1 21 14 6 22 12 7 23 13 7 24 17 5 25 18 1 26 16 3 27 19 1 28 16 5 29 18 2 30 22 6 31 20 0 32 21 6 33 20 2 34 22 4 35 23</p></triangles>
+      </mesh>
+    </geometry>
+    <geometry id="pCube1-lib" name="pCube1Mesh">
+      <mesh>
+        <source id="pCube1-POSITION">
+          <float_array id="pCube1-POSITION-array" count="24">
+-4.000000 -3.000000 1.000000
+4.000000 -3.000000 1.000000
+-4.000000 3.000000 1.000000
+4.000000 3.000000 1.000000
+-4.000000 3.000000 -1.000000
+4.000000 3.000000 -1.000000
+-4.000000 -3.000000 -1.000000
+4.000000 -3.000000 -1.000000
+</float_array>
+          <technique_common>
+            <accessor source="#pCube1-POSITION-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="pCube1-Normal0">
+          <float_array id="pCube1-Normal0-array" count="108">
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+-1.000000 0.000000 0.000000
+</float_array>
+          <technique_common>
+            <accessor source="#pCube1-Normal0-array" count="36" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="pCube1-UV0">
+          <float_array id="pCube1-UV0-array" count="48">
+0.001865 0.498131
+0.001865 0.001992
+0.373970 0.001992
+0.373970 0.498131
+0.379817 0.498131
+0.379817 0.001992
+0.503851 0.001992
+0.503851 0.498131
+0.511214 0.498131
+0.511214 0.001992
+0.883319 0.001992
+0.883319 0.498131
+0.810485 0.998008
+0.810485 0.501869
+0.934520 0.501869
+0.934520 0.998008
+0.680705 0.501869
+0.804740 0.501869
+0.804740 0.873973
+0.680705 0.873973
+0.550925 0.501869
+0.674960 0.501869
+0.674960 0.873973
+0.550925 0.873973
+</float_array>
+          <technique_common>
+            <accessor source="#pCube1-UV0-array" count="24" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="pCube1-VERTEX">
+          <input semantic="POSITION" source="#pCube1-POSITION"/>
+        </vertices>
+        <triangles count="12" material="Default_Material"><input semantic="VERTEX" offset="0" source="#pCube1-VERTEX"/><input semantic="NORMAL" offset="1" source="#pCube1-Normal0"/><input semantic="TEXCOORD" offset="2" set="0" source="#pCube1-UV0"/><p> 3 0 2 2 1 3 0 2 0 3 3 2 0 4 0 1 5 1 2 6 4 3 7 5 5 8 6 2 9 4 5 10 6 4 11 7 7 12 10 6 13 11 4 14 8 7 15 10 4 16 8 5 17 9 1 18 14 0 19 15 6 20 12 1 21 14 6 22 12 7 23 13 7 24 17 5 25 18 1 26 16 3 27 19 1 28 16 5 29 18 2 30 22 6 31 20 0 32 21 6 33 20 2 34 22 4 35 23</p></triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="" name="">
+      <node name="wallModul_parallel" id="wallModul_parallel" sid="wallModul_parallel"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra><node name="pCube2" id="pCube2" sid="pCube2"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 3.000000 0.000000 0.000000 1.000000 2.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#pCube2-lib"><bind_material><technique_common><instance_material symbol="Default_Material" target="#Default_Material"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node><node name="pCube1" id="pCube1" sid="pCube1"><matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 3.000000 0.000000 0.000000 1.000000 -4.000000 0.000000 0.000000 0.000000 1.000000</matrix><instance_geometry url="#pCube1-lib"><bind_material><technique_common><instance_material symbol="Default_Material" target="#Default_Material"/></technique_common></bind_material></instance_geometry><extra><technique profile="FCOLLADA"><visibility>1.000000</visibility></technique></extra></node></node>
+      <extra><technique profile="MAX3D"><frame_rate>24.000000</frame_rate></technique><technique profile="FCOLLADA"><start_time>0.041667</start_time><end_time>2.000000</end_time></technique></extra>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#"></instance_visual_scene>
+  </scene>
+</COLLADA>
