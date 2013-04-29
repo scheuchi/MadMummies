@@ -37,6 +37,7 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
 	shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
 	mesh->SetShader(shader);
+
 	//--------------------------------------------
 
 	Assimp::Importer importer;
