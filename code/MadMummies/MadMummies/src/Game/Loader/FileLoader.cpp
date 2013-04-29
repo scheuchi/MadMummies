@@ -6,6 +6,7 @@
 #include "Engine/Core/Light.h"
 #include "Engine/Core/Shader.h"
 #include "Engine/Core/Mesh.h"
+#include "Engine/Core/Group.h"
 
 #include "Game/Behavior/MeshBehavior.h"
 #include "Game/Behavior/CameraBehavior.h"
@@ -25,52 +26,25 @@ FileLoader::~FileLoader()
 
 Scene* FileLoader::LoadScene(std::string sceneName)
 {
-	Scene* scene = new Scene();
-	scene->SetScene(scene);
-
-	Mesh* mesh = new Mesh();
-	mesh->SetScene(scene);
-	mesh->SetPosition(glm::vec3(0.0f, 0.0f, -400.0f));
-	mesh->SetBehavior(new MeshBehavior());
-
-	Shader* shader = new Shader();
-	shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
-	shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
-	mesh->SetShader(shader);
-
-	//--------------------------------------------
-
 	Assimp::Importer importer;
-	const aiScene* impScene = importer.ReadFile(".\\resources\\meshes\\rubberDuck.dae", aiProcess_Triangulate);
-	if(impScene == NULL) {
+	
+	const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckieMaze.dae", aiProcess_Triangulate);
+	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\rubberDuck.dae", aiProcess_Triangulate);
+	
+	if(assimpScene == 0) {
 		std::cout << importer.GetErrorString() << std::endl;
+		system("pause");
 		exit(-1);
 	}
-	
-	unsigned int noOfVertices = impScene->mMeshes[0]->mNumVertices;
 
-	//create vertex position array
-	float* positionBuffer = new float[noOfVertices*3];
-	float* normalBuffer = new float[noOfVertices*3];
-	float* uvBuffer = new float[noOfVertices*2];
-	
-	for(unsigned int i = 0; i < noOfVertices; i++) {		
-		positionBuffer[i*3] = impScene->mMeshes[0]->mVertices[i].x;
-		positionBuffer[i*3+1] = impScene->mMeshes[0]->mVertices[i].y;
-		positionBuffer[i*3+2] = impScene->mMeshes[0]->mVertices[i].z;
-		normalBuffer[i*3] = impScene->mMeshes[0]->mNormals[i].x;
-		normalBuffer[i*3+1] = impScene->mMeshes[0]->mNormals[i].y;
-		normalBuffer[i*3+2] = impScene->mMeshes[0]->mNormals[i].z;
-		uvBuffer[i*2] = impScene->mMeshes[0]->mTextureCoords[0][i].x;
-		uvBuffer[i*2+1] = impScene->mMeshes[0]->mTextureCoords[0][i].y;
+	if (assimpScene->mRootNode == 0) {
+		std::cout << "Imported file doesn't contain nodes." << std::endl;
+		system("pause");
+		exit(-1);
 	}
-	
-	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, normalBuffer, uvBuffer, 0, noOfVertices, 0);
 
-	//--------------------------------------------
-	mesh->SetVertexBufferObject(vbo);
-	scene->AddChild(mesh);
-	
+	Scene* scene = CreateNode(assimpScene, assimpScene->mRootNode, 0, 0);
+		
 	Camera* camera = new Camera();
 	camera->SetScene(scene);
 	camera->SetViewport(0, 0, 1024, 768);
@@ -84,4 +58,124 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	scene->AddChild(camera);
 
 	return scene;
+}
+
+
+Scene* FileLoader::CreateNode(const aiScene* assimpScene, aiNode* assimpNode, Node* parent, Scene* paramScene)
+{
+	Scene* scene = 0;
+	if (parent == 0) {
+		scene = CreateScene(assimpScene, assimpNode);
+		paramScene = scene;
+		parent = scene;
+	} else if (assimpNode->mNumMeshes > 0) {
+		Mesh* newMesh = CreateMesh(assimpScene, assimpNode, paramScene);
+		parent->AddChild(newMesh);
+		parent = newMesh;		
+	} else {
+		Group* newGroup = CreateGroup(assimpScene, assimpNode, paramScene);		
+		parent->AddChild(newGroup);
+		parent = newGroup;
+	}
+
+	for(unsigned int i = 0; i < assimpNode->mNumChildren; ++i) {
+		CreateNode(assimpScene, assimpNode->mChildren[i], parent, paramScene);
+	}
+
+	return scene;
+}
+
+
+Scene* FileLoader::CreateScene(const aiScene* assimpScene, aiNode* assimpNode)
+{
+	Scene* scene = new Scene;
+	scene->SetScene(scene);
+
+	aiMatrix4x4 mat = assimpNode->mTransformation;
+
+	glm::mat4 transformation(	mat.a1, mat.a2, mat.a3, mat.a4,
+								mat.b1, mat.b2, mat.b3, mat.b4,
+								mat.c1, mat.c2, mat.c3, mat.c4,
+								mat.d1, mat.d2, mat.d3, mat.d4);
+	scene->SetLocalMatrix(transformation);
+
+	return scene;
+}
+
+Group* FileLoader::CreateGroup(const aiScene* assimpScene, aiNode* assimpNode, Scene* paramScene)
+{
+	Group* group = new Group;
+	group->SetScene(paramScene);
+
+	aiMatrix4x4 mat = assimpNode->mTransformation;
+
+	glm::mat4 transformation(	mat.a1, mat.a2, mat.a3, mat.a4,
+								mat.b1, mat.b2, mat.b3, mat.b4,
+								mat.c1, mat.c2, mat.c3, mat.c4,
+								mat.d1, mat.d2, mat.d3, mat.d4);
+	group->SetLocalMatrix(transformation);
+	
+	return group;
+}
+
+Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Scene* paramScene)
+{
+	Mesh* mesh = new Mesh;
+	mesh->SetScene(paramScene);
+
+	mesh->SetBehavior(new MeshBehavior());
+
+	unsigned int meshIdx = assimpNode->mMeshes[0];
+	unsigned int numOfVertices = assimpScene->mMeshes[meshIdx]->mNumVertices;
+	aiMesh* assimpMesh = assimpScene->mMeshes[meshIdx];
+
+	float* positionBuffer = 0;
+	float* normalBuffer = 0;
+	float* uvBuffer = 0;
+
+	//create vertex position array
+	if (assimpMesh->HasPositions()) {
+		positionBuffer = new float[numOfVertices * 3];
+		for(unsigned int i = 0; i < numOfVertices; i++) {
+			positionBuffer[i*3] = assimpMesh->mVertices[i].x;
+			positionBuffer[i*3+1] = assimpMesh->mVertices[i].y;
+			positionBuffer[i*3+2] = assimpMesh->mVertices[i].z;
+		}
+	}
+
+	if (/*assimpMesh->HasNormals()*/ false) {
+		normalBuffer = new float[numOfVertices * 3];
+		for(unsigned int i = 0; i < numOfVertices; i++) {
+			normalBuffer[i*3] = assimpMesh->mNormals[i].x;
+			normalBuffer[i*3+1] = assimpMesh->mNormals[i].y;
+			normalBuffer[i*3+2] = assimpMesh->mNormals[i].z;
+		}
+	}
+
+	if (/*assimpMesh->HasTextureCoords(0)*/ false) {
+		uvBuffer = new float[numOfVertices * 2];	
+		for(unsigned int i = 0; i < numOfVertices; i++) {
+			uvBuffer[i*2] = assimpMesh->mTextureCoords[0][i].x;
+			uvBuffer[i*2+1] = assimpMesh->mTextureCoords[0][i].y;
+		}
+	}
+	
+	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, normalBuffer, uvBuffer, 0, numOfVertices, 0);
+	mesh->SetVertexBufferObject(vbo);
+	
+	Shader* shader = new Shader();
+	shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
+	shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
+	mesh->SetShader(shader);
+
+	aiMatrix4x4 mat = assimpNode->mTransformation;
+
+	glm::mat4 transformation(	mat.a1, mat.a2, mat.a3, mat.a4,
+								mat.b1, mat.b2, mat.b3, mat.b4,
+								mat.c1, mat.c2, mat.c3, mat.c4,
+								mat.d1, mat.d2, mat.d3, mat.d4);
+	mesh->SetLocalMatrix(transformation);
+	//mesh->SetPosition(glm::vec3(0.0f, 0.0f, -400.0f));
+
+	return mesh;
 }
