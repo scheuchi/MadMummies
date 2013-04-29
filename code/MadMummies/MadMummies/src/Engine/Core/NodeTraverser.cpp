@@ -25,6 +25,11 @@ void NodeTraverser::UploadToVram(Node* node, void*)
 	node->UploadToVram();
 }
 
+void NodeTraverser::UpdateModelMatrix(Node* node, void* data)
+{
+	node->UpdateModelMatrix();
+}
+
 void NodeTraverser::Traverse(Node* rootNode, TraverserFunction func, void* data)
 {
 	if (rootNode == 0) {

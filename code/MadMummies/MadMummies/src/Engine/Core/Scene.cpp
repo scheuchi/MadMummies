@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-Scene::Scene() : m_cameraList()
+Scene::Scene() : m_cameraList(), m_activeCamera(0)
 {
 }
 

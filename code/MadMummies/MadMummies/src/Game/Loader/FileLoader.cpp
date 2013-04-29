@@ -7,6 +7,9 @@
 #include "Engine/Core/Shader.h"
 #include "Engine/Core/Mesh.h"
 
+#include "Game/Behavior/MeshBehavior.h"
+#include "Game/Behavior/CameraBehavior.h"
+
 #include <assimp/Importer.hpp> // C++ importer interface
 #include <assimp/scene.h> // Output data structure
 #include <assimp/postprocess.h> // Post processing flags
@@ -27,14 +30,16 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 
 	Mesh* mesh = new Mesh();
 	mesh->SetScene(scene);
+	mesh->SetPosition(glm::vec3(0.0f, 0.0f, -400.0f));
+	mesh->SetBehavior(new MeshBehavior());
 
-	Assimp::Importer importer;
-	
 	Shader* shader = new Shader();
 	shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
 	shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
 	mesh->SetShader(shader);
+	//--------------------------------------------
 
+	Assimp::Importer importer;
 	const aiScene* impScene = importer.ReadFile(".\\resources\\meshes\\rubberDuck.dae", aiProcess_Triangulate);
 	if(impScene == NULL) {
 		std::cout << importer.GetErrorString() << std::endl;
@@ -47,7 +52,6 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	float* positionBuffer = new float[noOfVertices*3];
 	float* normalBuffer = new float[noOfVertices*3];
 	float* uvBuffer = new float[noOfVertices*2];
-
 	
 	for(unsigned int i = 0; i < noOfVertices; i++) {		
 		positionBuffer[i*3] = impScene->mMeshes[0]->mVertices[i].x;
@@ -59,23 +63,23 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 		uvBuffer[i*2] = impScene->mMeshes[0]->mTextureCoords[0][i].x;
 		uvBuffer[i*2+1] = impScene->mMeshes[0]->mTextureCoords[0][i].y;
 	}
-
+	
 	VertexBufferObject* vbo = new VertexBufferObject(positionBuffer, normalBuffer, uvBuffer, 0, noOfVertices, 0);
-	mesh->SetVertexBufferObject(vbo);
 
+	//--------------------------------------------
+	mesh->SetVertexBufferObject(vbo);
 	scene->AddChild(mesh);
 	
-	/*
-	Cube* cube = new Cube();
-	scene->AddChild(cube);
-
-	Light* light = new Light();
-	scene->AddChild(light);
-	*/
-
 	Camera* camera = new Camera();
 	camera->SetScene(scene);
-	camera->SetViewport(0, 0, 500, 500);
+	camera->SetViewport(0, 0, 1024, 768);
+	camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	camera->SetLookAtVector(glm::vec3(0.0f, 0.0f, -1.0f));
+	camera->SetUpVector(glm::vec3(0.0f, 1.0f, 0.0f));
+	camera->SetNearPlane(0.1f);
+	camera->SetFarPlane(1000.0f);
+	camera->SetFieldOfView(60.0f);
+	camera->SetBehavior(new CameraBehavior);
 	scene->AddChild(camera);
 
 	return scene;

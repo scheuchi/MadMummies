@@ -27,16 +27,19 @@ public:
 	glm::vec3& GetScale();
 	void Scale(glm::vec3& scale);
 
-	glm::mat4& GetModelMatrix();
+	virtual glm::mat4 GetModelMatrix();
+	virtual void UpdateModelMatrix();
 	
 	glm::mat4& GetLocalMatrix();
 	void SetLocalMatrix(glm::mat4& localMatrix);
 
 private:
+	void InvalidateLocalMatrix(bool invalidate) { m_isLocalMatrixInvalid = invalidate; }
+	bool IsLocalMatrixInvalid() { return m_isLocalMatrixInvalid; }
+	
 	glm::mat4 m_localMatrix;
 	glm::mat4 m_modelMatrix;
 	bool m_isLocalMatrixInvalid;
-	bool m_isModelMatrixInvalid;
 	
 	glm::vec3 m_rotation;
 	glm::vec3 m_position;

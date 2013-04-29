@@ -20,12 +20,14 @@ public:
 
 	const std::vector<Camera*>& GetCameraList() { return m_cameraList; }
 
+	Camera* GetActiveCamera() { return m_activeCamera; }
+
 private:
 	void AddCamera(Camera* camera) { m_cameraList.push_back(camera); }
 	void RemoveCamera(Camera* camera);
-
+	void SetActiveCamera(Camera* camera) { m_activeCamera = camera; }
 
 	std::vector<Camera*> m_cameraList;
-
+	Camera* m_activeCamera;
 };
 

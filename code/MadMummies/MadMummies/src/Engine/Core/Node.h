@@ -1,8 +1,10 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
+#include "Engine/Behavior/Behavior.h"
 
 class RenderState;
-class Behavior;
 class Scene;
 
 
@@ -16,6 +18,9 @@ public:
 	virtual void Render();
 	virtual void UploadToVram() {};
 	virtual void UnloadFromVram() {};
+
+	virtual glm::mat4 GetModelMatrix() { return (GetParent() != 0) ? GetParent()->GetModelMatrix() : glm::mat4(1.0f); }
+	virtual void UpdateModelMatrix() {};
 
 	Scene* GetScene() { return m_scene; }
 	void SetScene(Scene* scene) { m_scene = scene; OnSetScene(); }
@@ -33,7 +38,7 @@ public:
 	}
 	Node* GetNextSibling() { return m_nextSibling; }
 
-	void SetBehavior(Behavior* behavior) { m_behavior = behavior; }
+	void SetBehavior(Behavior* behavior) { m_behavior = behavior; m_behavior->SetNode(this); }
 	Behavior* GetBehavior() { return m_behavior; }
 
 	void SetRenderState(RenderState* renderState) { m_renderState = renderState; }
