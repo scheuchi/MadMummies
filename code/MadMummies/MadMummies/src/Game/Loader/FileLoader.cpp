@@ -28,7 +28,9 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 {
 	Assimp::Importer importer;
 	
-	const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckieMaze.dae", aiProcess_Triangulate);
+	const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\wall_parallel.dae", aiProcess_Triangulate);
+	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckWithWalls.dae", aiProcess_Triangulate);
+	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckieMaze.dae", aiProcess_Triangulate);
 	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\rubberDuck.dae", aiProcess_Triangulate);
 	
 	if(assimpScene == 0) {
