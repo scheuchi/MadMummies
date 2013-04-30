@@ -19,7 +19,7 @@ public:
 	virtual void Activate();
 
 	void SetBitmap(Bitmap* bitmap) { m_bitmap = bitmap; }
-	Bitmap* GetPath() { return m_bitmap; }
+	Bitmap* GetBitmap() { return m_bitmap; }
 
 	void SetTextureUnit(int unit) { m_unit = unit; }
 	int GetTextureUnit() { return m_unit; }
