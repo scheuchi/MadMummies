@@ -93,19 +93,20 @@ void Transformable::UpdateModelMatrix()
 glm::mat4& Transformable::GetLocalMatrix()
 {
 	if (IsLocalMatrixInvalid()) {
-		// position
-		glm::mat4 translationMatrix = glm::translate(m_position);
-		// rotation
-		glm::mat4 rotationMatrix = glm::mat4(1.0f);
-		rotationMatrix *= glm::rotate(glm::mat4(1.0f), m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f)); // x
-		rotationMatrix *= glm::rotate(glm::mat4(1.0f), m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)); // y
-		rotationMatrix *= glm::rotate(glm::mat4(1.0f), m_rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)); // z
 		// scale
-		glm::mat4 scaleMatrix = glm::scale(m_scale);
+		m_localMatrix = glm::scale(m_localMatrix, m_scale);
+		m_scale = glm::vec3(1);
 		
-		m_localMatrix = translationMatrix * rotationMatrix * scaleMatrix;
-		// camera: m_localMatrix = scaleMatrix * rotationMatrix * translationMatrix; // camera
-		
+		// rotation
+		m_localMatrix = glm::rotate(m_localMatrix, m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f)); // x
+		m_localMatrix = glm::rotate(m_localMatrix, m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)); // y
+		m_localMatrix = glm::rotate(m_localMatrix, m_rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)); // z
+		m_rotation = glm::vec3(0);
+
+		// position
+		m_localMatrix = glm::translate(m_localMatrix, m_position);
+		m_position = glm::vec3(0);
+
 		InvalidateLocalMatrix(false);
 	}	
 	return m_localMatrix;
@@ -118,4 +119,22 @@ void Transformable::SetLocalMatrix(glm::mat4& localMatrix)
 	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
 	InvalidateLocalMatrix(false);
+}
+
+void Transformable::InitMatrix()
+{
+
+	glm::mat4 translationMatrix = glm::translate(m_position);
+	m_position = glm::vec3(0);
+	// rotation
+	glm::mat4 rotationMatrix = glm::mat4(1.0f);
+	rotationMatrix *= glm::rotate(glm::mat4(1.0f), m_rotation.x, glm::vec3(1.0f, 0.0f, 0.0f)); // x
+	rotationMatrix *= glm::rotate(glm::mat4(1.0f), m_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)); // y
+	rotationMatrix *= glm::rotate(glm::mat4(1.0f), m_rotation.z, glm::vec3(0.0f, 0.0f, 1.0f)); // z
+	m_rotation = glm::vec3(0);
+	// scale
+	glm::mat4 scaleMatrix = glm::scale(m_scale);
+	m_scale = glm::vec3(1);
+		
+	m_localMatrix = translationMatrix * rotationMatrix * scaleMatrix;
 }

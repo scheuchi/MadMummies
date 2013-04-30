@@ -45,21 +45,49 @@ void Camera::UpdateModelMatrix()
 {
 	Base::UpdateModelMatrix();
 	
+	/*
 	glm::mat4& modelMatrix = Base::GetModelMatrix();
 	glm::vec3 modelPosition(modelMatrix[3][0],
 							modelMatrix[3][1],
 							modelMatrix[3][2]);
+	
 	modelMatrix = glm::rotate(modelMatrix,GetRotation().y, glm::vec3(0, 1, 0));
 	glm::vec4 modelLookAtVector = modelMatrix * glm::vec4(m_lookAtVector, 1.0f);
 	glm::vec3 lookAt = glm::vec3(modelLookAtVector.x, modelLookAtVector.y, modelLookAtVector.z);
-
+	
 	m_viewMatrix = glm::lookAt(
 			modelPosition,		// position of the camera in world space
 			lookAt,				// look-at vector in world space
 			m_upVector);		// up vector in local space
-	
-	//m_viewMatrix = glm::inverse(Base::GetModelMatrix());
+	*/
 
+
+	
+	//m_viewMatrix = glm::translate(m_viewMatrix,glm::vec3(Base::GetPosition().x, Base::GetPosition().y, Base::GetPosition().z));
+	//m_viewMatrix = glm::translate(glm::mat4(1.0f),glm::vec3(-Base::GetPosition().x, -Base::GetPosition().y, -Base::GetPosition().z));
+	//m_viewMatrix = glm::rotate(m_viewMatrix, Base::GetRotation().y, glm::vec3(0.0f, -1.0f, 0.0f));
+
+	
+
+	// ------------------------------------------
+	// Version 1 working (kind of)
+	
+	//m_viewMatrix = glm::translate(glm::mat4(1.0f),glm::vec3(-Base::GetPosition().x, -Base::GetPosition().y, -Base::GetPosition().z));
+	//m_viewMatrix = glm::rotate(m_viewMatrix, Base::GetRotation().y, glm::vec3(0.0f, -1.0f, 0.0f));
+
+	glm::mat4 dummy = GetLocalMatrix();
+	glm::vec3 position = glm::vec3(dummy[3][0], dummy[3][1], dummy[3][2]);
+	dummy[3][0] = 0.0f;
+	dummy[3][1] = 0.0f;
+	dummy[3][2] = 0.0f;
+
+
+	m_viewMatrix = glm::translate(glm::mat4(1.0f),glm::vec3(-position.x, -position.y, -position.z));
+	m_viewMatrix = m_viewMatrix * dummy;
+
+	m_viewMatrix = glm::inverse(m_viewMatrix);
+
+	
 	m_projectionMatrix = glm::perspective<glm::float_t>(
 			m_fieldOfView,								// horizontal Field of View in degrees
 			(float) m_ViewportWidth / m_ViewportHeight,	// aspect ratio
