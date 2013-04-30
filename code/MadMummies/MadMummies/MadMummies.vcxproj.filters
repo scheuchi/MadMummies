@@ -26,6 +26,7 @@
     <ClCompile Include="src\Game\Loader\FileLoader.cpp" />
     <ClCompile Include="src\Game\Main\Game.cpp" />
     <ClCompile Include="src\Game\Main\MadMummies.cpp" />
+    <ClCompile Include="src\Game\Behavior\DuckBehavior.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Behavior\Behavior.h" />
@@ -52,5 +53,6 @@
     <ClInclude Include="src\Game\Loader\DummyLoader.h" />
     <ClInclude Include="src\Game\Loader\FileLoader.h" />
     <ClInclude Include="src\Game\Main\Game.h" />
+    <ClInclude Include="src\Game\Behavior\DuckBehavior.h" />
   </ItemGroup>
 </Project>

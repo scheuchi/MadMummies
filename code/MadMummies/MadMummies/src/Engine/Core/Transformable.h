@@ -27,6 +27,8 @@ public:
 	glm::vec3& GetScale();
 	void Scale(glm::vec3& scale);
 
+	void InitMatrix();
+
 	virtual glm::mat4 GetModelMatrix();
 	virtual void UpdateModelMatrix();
 	

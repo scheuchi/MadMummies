@@ -10,6 +10,7 @@
 
 #include "Game/Behavior/MeshBehavior.h"
 #include "Game/Behavior/CameraBehavior.h"
+#include "Game/Behavior/DuckBehavior.h"
 
 #include <assimp/Importer.hpp> // C++ importer interface
 #include <assimp/scene.h> // Output data structure
@@ -37,8 +38,8 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 
 	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\walls_p.dae", aiProcess_Triangulate);
 	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\wall_parallel.dae", aiProcess_Triangulate);
-	const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckWithWalls.dae", aiProcess_Triangulate);
-	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckieMaze.dae", aiProcess_Triangulate);
+	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckWithWalls.dae", aiProcess_Triangulate);
+	const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckieMaze.dae", aiProcess_Triangulate);
 	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\rubberDuck.dae", aiProcess_Triangulate);
 	
 	if(assimpScene == 0) {
@@ -62,13 +63,25 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	Camera* camera = new Camera();
 	camera->SetScene(scene);
 	camera->SetViewport(0, 0, 1024, 768);
-	camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	
+	//camera->SetPosition(glm::vec3(1.0f, 2.0f, 3.0f));
+	//camera->InitMatrix();
+
+	glm::mat4 cameraTransformation(1.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 0.68f, -0.73f, 0.0f,
+				0.0f, 0.73f, 0.68f, 0.0f,
+				0.0f, -102.0f, -60.0f, 1.0f);
+	camera->SetLocalMatrix(cameraTransformation);
+
 	camera->SetLookAtVector(glm::vec3(0.0f, 0.0f, -1.0f));
 	camera->SetUpVector(glm::vec3(0.0f, 1.0f, 0.0f));
 	camera->SetNearPlane(0.1f);
 	camera->SetFarPlane(1000.0f);
 	camera->SetFieldOfView(60.0f);
-	camera->SetBehavior(new CameraBehavior);
+
+	camera->SetBehavior(new MeshBehavior());
+	//camera->SetBehavior(new CameraBehavior);
+	
 	cameraGroup->AddChild(camera);
 
 	return scene;
@@ -84,6 +97,12 @@ Scene* FileLoader::CreateNode(const aiScene* assimpScene, aiNode* assimpNode, No
 		parent = scene;
 	} else if (assimpNode->mNumMeshes > 0) {
 		Mesh* newMesh = CreateMesh(assimpScene, assimpNode, paramScene);
+		// *pCube*
+		if (std::strcmp(assimpNode->mName.C_Str(),"myDuckie_LOD3sp") == 0) {
+			newMesh->SetBehavior(new DuckBehavior());
+		} else {
+			//newMesh->SetBehavior(new MeshBehavior());
+		}
 		parent->AddChild(newMesh);
 		parent = newMesh;		
 	} else {
@@ -107,10 +126,10 @@ Scene* FileLoader::CreateScene(const aiScene* assimpScene, aiNode* assimpNode)
 
 	aiMatrix4x4 mat = assimpNode->mTransformation;
 
-	glm::mat4 transformation(	mat.a1, mat.a2, mat.a3, mat.a4,
-								mat.b1, mat.b2, mat.b3, mat.b4,
-								mat.c1, mat.c2, mat.c3, mat.c4,
-								mat.d1, mat.d2, mat.d3, mat.d4);
+	glm::mat4 transformation(	mat.a1, mat.b1, mat.c1, mat.d1,
+								mat.a2, mat.b2, mat.c2, mat.d2,
+								mat.a3, mat.b3, mat.c3, mat.d3,
+								mat.a4, mat.b4, mat.c4, mat.d4);
 	scene->SetLocalMatrix(transformation);
 
 	return scene;
@@ -122,12 +141,12 @@ Group* FileLoader::CreateGroup(const aiScene* assimpScene, aiNode* assimpNode, S
 	group->SetScene(paramScene);
 
 	aiMatrix4x4 mat = assimpNode->mTransformation;
-
-	glm::mat4 transformation(	mat.a1, mat.a2, mat.a3, mat.a4,
-								mat.b1, mat.b2, mat.b3, mat.b4,
-								mat.c1, mat.c2, mat.c3, mat.c4,
-								mat.d1, mat.d2, mat.d3, mat.d4);
+	glm::mat4 transformation(	mat.a1, mat.b1, mat.c1, mat.d1,
+								mat.a2, mat.b2, mat.c2, mat.d2,
+								mat.a3, mat.b3, mat.c3, mat.d3,
+								mat.a4, mat.b4, mat.c4, mat.d4);
 	group->SetLocalMatrix(transformation);
+
 	
 	return group;
 }
@@ -136,8 +155,6 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 {
 	Mesh* mesh = new Mesh;
 	mesh->SetScene(paramScene);
-
-	mesh->SetBehavior(new MeshBehavior());
 
 	unsigned int meshIdx = assimpNode->mMeshes[0];
 	unsigned int numOfVertices = assimpScene->mMeshes[meshIdx]->mNumVertices;
@@ -183,11 +200,10 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 	mesh->SetShader(shader);
 
 	aiMatrix4x4 mat = assimpNode->mTransformation;
-
-	glm::mat4 transformation(	mat.a1, mat.a2, mat.a3, mat.a4,
-								mat.b1, mat.b2, mat.b3, mat.b4,
-								mat.c1, mat.c2, mat.c3, mat.c4,
-								mat.d1, mat.d2, mat.d3, mat.d4);
+	glm::mat4 transformation(	mat.a1, mat.b1, mat.c1, mat.d1,
+								mat.a2, mat.b2, mat.c2, mat.d2,
+								mat.a3, mat.b3, mat.c3, mat.d3,
+								mat.a4, mat.b4, mat.c4, mat.d4);
 	mesh->SetLocalMatrix(transformation);
 	//mesh->SetPosition(glm::vec3(0.0f, 0.0f, -400.0f));
 
