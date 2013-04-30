@@ -28,11 +28,16 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 {
 	Assimp::Importer importer;
 	
-	const aiScene* assimpScene = importer.ReadFile(".\\resources\\blender\\labyrinth_01.blend", aiProcess_Triangulate);
+	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\blender\\labyrinth_01.blend", aiProcess_Triangulate);
+
+	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\cube_untextured.dae", aiProcess_Triangulate);
+
+	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duck.dae", aiProcess_Triangulate);
+
 
 	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\walls_p.dae", aiProcess_Triangulate);
 	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\wall_parallel.dae", aiProcess_Triangulate);
-	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckWithWalls.dae", aiProcess_Triangulate);
+	const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckWithWalls.dae", aiProcess_Triangulate);
 	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckieMaze.dae", aiProcess_Triangulate);
 	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\rubberDuck.dae", aiProcess_Triangulate);
 	
@@ -49,7 +54,11 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	}
 
 	Scene* scene = CreateNode(assimpScene, assimpScene->mRootNode, 0, 0);
-		
+
+	Group* cameraGroup = new Group;
+	cameraGroup->SetScene(scene);
+	scene->AddChild(cameraGroup);
+
 	Camera* camera = new Camera();
 	camera->SetScene(scene);
 	camera->SetViewport(0, 0, 1024, 768);
@@ -60,7 +69,7 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	camera->SetFarPlane(1000.0f);
 	camera->SetFieldOfView(60.0f);
 	camera->SetBehavior(new CameraBehavior);
-	scene->AddChild(camera);
+	cameraGroup->AddChild(camera);
 
 	return scene;
 }

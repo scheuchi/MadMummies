@@ -39,11 +39,11 @@ void MeshBehavior::Update(double deltaT)
 		m_rightPressed = false;
 	}
 	if (m_upPressed) {
-		m_transformable->Translate(glm::vec3(0.0f, 0.0f, -0.2f));
+		m_transformable->Translate(glm::vec3(0.0f, 0.0f, -1.0f));
 		m_upPressed = false;
 	}
 	if (m_downPressed) {
-		m_transformable->Translate(glm::vec3(0.0f, 0.0f, 0.2f));
+		m_transformable->Translate(glm::vec3(0.0f, 0.0f, 1.0f));
 		m_downPressed = false;
 	}
 }

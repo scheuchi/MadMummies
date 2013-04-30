@@ -104,6 +104,8 @@ glm::mat4& Transformable::GetLocalMatrix()
 		glm::mat4 scaleMatrix = glm::scale(m_scale);
 		
 		m_localMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+		// camera: m_localMatrix = scaleMatrix * rotationMatrix * translationMatrix; // camera
+		
 		InvalidateLocalMatrix(false);
 	}	
 	return m_localMatrix;

@@ -17,6 +17,9 @@ public:
 
 	virtual void UpdateModelMatrix();
 
+	virtual glm::mat4& GetLocalMatrix();
+
+
 	void Activate();
 	
 	void SetViewport(int top, int left, int width, int height) {

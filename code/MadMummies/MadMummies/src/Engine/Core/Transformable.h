@@ -30,10 +30,10 @@ public:
 	virtual glm::mat4 GetModelMatrix();
 	virtual void UpdateModelMatrix();
 	
-	glm::mat4& GetLocalMatrix();
+	virtual glm::mat4& GetLocalMatrix();
 	void SetLocalMatrix(glm::mat4& localMatrix);
 
-private:
+protected:
 	void InvalidateLocalMatrix(bool invalidate) { m_isLocalMatrixInvalid = invalidate; }
 	bool IsLocalMatrixInvalid() { return m_isLocalMatrixInvalid; }
 	
