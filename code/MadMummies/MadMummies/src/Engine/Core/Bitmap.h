@@ -10,6 +10,8 @@ public:
 	virtual ~Bitmap();
 
 	std::string GetPath() { return m_path; }
+
+	void SetData(unsigned char* data) { m_data = data; }
 	unsigned char* GetData();
 
 	int GetWidth() { return m_width; }

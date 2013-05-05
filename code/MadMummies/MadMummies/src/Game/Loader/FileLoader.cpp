@@ -72,15 +72,13 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 				0.0f, 0.73f, 0.68f, 0.0f,
 				0.0f, -102.0f, -60.0f, 1.0f);
 	camera->SetLocalMatrix(cameraTransformation);
-
-	camera->SetLookAtVector(glm::vec3(0.0f, 0.0f, -1.0f));
-	camera->SetUpVector(glm::vec3(0.0f, 1.0f, 0.0f));
+	camera->LookAt(glm::vec3(0.0f,1.0f,0.0f),glm::vec3(0.0f,0.0f,-1.0f));
 	camera->SetNearPlane(0.1f);
 	camera->SetFarPlane(1000.0f);
 	camera->SetFieldOfView(60.0f);
 
-	camera->SetBehavior(new MeshBehavior());
-	//camera->SetBehavior(new CameraBehavior);
+	//camera->SetBehavior(new MeshBehavior());
+	camera->SetBehavior(new CameraBehavior);
 	
 	cameraGroup->AddChild(camera);
 

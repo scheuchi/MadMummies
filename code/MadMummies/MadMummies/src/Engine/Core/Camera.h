@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Transformable.h"
+#include <glm/ext.hpp>
 #include "Scene.h"
+#include <iostream>
+#include <stdio.h>
 
 
 class Camera : public Transformable
@@ -19,7 +22,6 @@ public:
 
 	virtual glm::mat4& GetLocalMatrix();
 
-
 	void Activate();
 	
 	void SetViewport(int top, int left, int width, int height) {
@@ -30,11 +32,13 @@ public:
 	glm::mat4& GetViewMatrix() { return m_viewMatrix; }
 	glm::mat4& GetProjectionMatrix() { return m_projectionMatrix; }
 
-	void SetLookAtVector(glm::vec3& vec) { m_lookAtVector = vec; }
-	glm::vec3& GetLookAtVector() { return m_lookAtVector; }
+	glm::vec3 GetSideDir() { return  glm::normalize(glm::vec3(m_viewMatrix[0][0],m_viewMatrix[1][0],m_viewMatrix[2][0])); }
+	glm::vec3 GetUpDir()   { return -glm::normalize(glm::vec3(m_viewMatrix[0][1],m_viewMatrix[1][1],m_viewMatrix[2][1])); }	
+	glm::vec3 GetLookDir() { return -glm::normalize(glm::vec3(m_viewMatrix[0][2],m_viewMatrix[1][2],m_viewMatrix[2][2])); }
+	glm::vec3 GetLookAtPoint() { return m_position + GetLookDir(); }
 
-	void SetUpVector(glm::vec3& vec) { m_upVector = vec; }
-	glm::vec3& GetUpVector() { return m_upVector; }
+	static float AngleBetween(glm::vec2 const & v1, glm::vec2 const & v2);
+	void LookAt(glm::vec3 const & eye, glm::vec3 const & center);
 
 	void SetFieldOfView(float fieldOfView) { m_fieldOfView = fieldOfView; }
 	float GetFieldOfView() { return m_fieldOfView; }
@@ -51,8 +55,6 @@ private:
 	glm::mat4 m_viewMatrix;
 	glm::mat4 m_projectionMatrix;
 
-	glm::vec3 m_lookAtVector;
-	glm::vec3 m_upVector;
 
 	float m_fieldOfView;
 	float m_nearPlane;

@@ -51,8 +51,7 @@ Scene* DummyLoader::LoadScene(std::string sceneName)
 	camera->SetScene(scene);
 	camera->SetViewport(0, 0, 1024, 768);
 	camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	camera->SetLookAtVector(glm::vec3(0.0f, 0.0f, -1.0f));
-	camera->SetUpVector(glm::vec3(0.0f, 1.0f, 0.0f));
+	camera->LookAt(glm::vec3(0.0f,1.0f,0.0f),glm::vec3(0.0f,0.0f,-1.0f));
 	camera->SetNearPlane(0.1f);
 	camera->SetFarPlane(1000.0f);
 	camera->SetFieldOfView(60.0f);

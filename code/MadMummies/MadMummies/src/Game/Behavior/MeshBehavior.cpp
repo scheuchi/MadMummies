@@ -91,9 +91,9 @@ void MeshBehavior::KeyPressed(int key)
 	case 'R':
 		m_rotate[x] = ROTATE_FACT;
 		break;
-	case 'D':
-		m_rotate[y] = -ROTATE_FACT;
-		break;
+	//case 'D':
+//		m_rotate[y] = -ROTATE_FACT;
+		//break;
 	case 'F':
 		m_rotate[y] = ROTATE_FACT;
 		break;

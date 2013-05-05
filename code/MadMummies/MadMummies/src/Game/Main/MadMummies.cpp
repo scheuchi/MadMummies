@@ -20,8 +20,6 @@
 #include "Game.h"
 #include "Engine/Util/Util.h"
 
-
-
 void OpenWindow(int width, int height)
 {
 	int i = 0;
@@ -64,6 +62,9 @@ void OpenWindow(int width, int height)
 	// Enable sticky keys
 	glfwEnable(GLFW_STICKY_KEYS);
 
+	// Disable mouse cursor
+	glfwDisable(GLFW_MOUSE_CURSOR);
+
 	// glGenVertexArrays is not working otherwise
 	glewExperimental = GL_TRUE;
 
@@ -79,6 +80,7 @@ void OpenWindow(int width, int height)
 	}
 
 	Util::DebugRegisterCallback();
+
 }
 
 void MainLoop()
@@ -91,8 +93,6 @@ void MainLoop()
 
 	Game* game = new Game;
 	game->Init();
-
-	// glm: for matrix computation
 
 	while (running)
 	{
