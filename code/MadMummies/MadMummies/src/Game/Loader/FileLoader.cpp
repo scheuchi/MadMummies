@@ -64,20 +64,19 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	camera->SetScene(scene);
 	camera->SetViewport(0, 0, 1024, 768);
 	
-	//camera->SetPosition(glm::vec3(1.0f, 2.0f, 3.0f));
-	//camera->InitMatrix();
-
+	//camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	//camera->InitMatrix();	
 	glm::mat4 cameraTransformation(1.0f, 0.0f, 0.0f, 0.0f,
 				0.0f, 0.68f, -0.73f, 0.0f,
 				0.0f, 0.73f, 0.68f, 0.0f,
-				0.0f, -102.0f, -60.0f, 1.0f);
+				0.0f, -102.0f, -60.0f, 10.0f);
 	camera->SetLocalMatrix(cameraTransformation);
-	camera->LookAt(glm::vec3(0.0f,1.0f,0.0f),glm::vec3(0.0f,0.0f,-1.0f));
+	camera->LookAt(glm::vec3(0.0f,1.0f,20.0f),glm::vec3(0.0f,0.0f,-1.0f));
+
 	camera->SetNearPlane(0.1f);
 	camera->SetFarPlane(1000.0f);
 	camera->SetFieldOfView(60.0f);
 
-	//camera->SetBehavior(new MeshBehavior());
 	camera->SetBehavior(new CameraBehavior);
 	
 	cameraGroup->AddChild(camera);
@@ -181,7 +180,7 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 		}
 	}
 
-	if (/*assimpMesh->HasTextureCoords(0)*/ false) {
+	if (assimpMesh->HasTextureCoords(0)) {
 		uvBuffer = new float[numOfVertices * 2];	
 		for(unsigned int i = 0; i < numOfVertices; i++) {
 			uvBuffer[i*2] = assimpMesh->mTextureCoords[0][i].x;
@@ -193,8 +192,20 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 	mesh->SetVertexBufferObject(vbo);
 	
 	Shader* shader = new Shader();
-	shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
-	shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
+	if (false) { //assimpMesh->HasTextureCoords(0)) {
+		shader->SetVertexShaderPath(".\\resources\\shader\\SimpleTexture.vert");
+		shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleTexture.frag");
+
+		// todo create materials
+		aiMaterial* material = assimpScene->mMaterials[assimpMesh->mMaterialIndex];
+		int count = material->GetTextureCount(aiTextureType_DIFFUSE);
+		
+		
+
+	} else {
+		shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
+		shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
+	}
 	mesh->SetShader(shader);
 
 	aiMatrix4x4 mat = assimpNode->mTransformation;
@@ -203,7 +214,6 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 								mat.a3, mat.b3, mat.c3, mat.d3,
 								mat.a4, mat.b4, mat.c4, mat.d4);
 	mesh->SetLocalMatrix(transformation);
-	//mesh->SetPosition(glm::vec3(0.0f, 0.0f, -400.0f));
 
 	return mesh;
 }
