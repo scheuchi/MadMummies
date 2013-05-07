@@ -1,21 +1,28 @@
 #pragma once
 
-#include "Transformable.h"
+#include "Engine/Core/Transformable.h"
 
 #include "glew.h"
+
+class Shader;
 
 class Light : public Transformable
 {
 	typedef Transformable Base;
 
 public:
-	Light(void);
-	virtual ~Light(void);
+	Light();
+	Light(glm::vec3 color, glm::vec3 direction, float ambientIntensity);
+	virtual ~Light();
 
 	virtual void Update(double deltaT);
-	virtual void Render();
+	virtual void OnSetScene();
+
+	void Activate(Shader* shader, unsigned int id);
 
 private:
-	GLfloat m_lightDiffuse[4];
-	GLfloat m_lightPosition[4];
+	glm::vec3 m_color;
+	glm::vec3 m_direction;
+	glm::vec3 m_mvDirection;
+	float m_ambientIntensity;
 };

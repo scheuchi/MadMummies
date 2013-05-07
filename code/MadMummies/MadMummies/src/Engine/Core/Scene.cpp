@@ -3,8 +3,10 @@
 #include "glew.h"
 #include <iostream>
 
+#include "Shader.h"
 
-Scene::Scene() : m_cameraList(), m_activeCamera(0)
+
+Scene::Scene() : m_cameraList(), m_activeCamera(0), m_lightList()
 {
 }
 
@@ -31,5 +33,27 @@ void Scene::RemoveCamera(Camera* camera)
 			m_cameraList.erase(it);
 			return;
 		}
+	}
+}
+
+void Scene::RemoveLight(Light* light)
+{
+	std::vector<Light*>::iterator it;
+
+	for (it = m_lightList.begin(); it != m_lightList.end(); it++) {
+		if (*it == light) {
+			m_lightList.erase(it);
+			return;
+		}
+	}
+}
+
+void Scene::ActivateLights(Shader* shader)
+{
+	std::vector<Light*>::iterator it;
+	unsigned int i;
+
+	for (it = m_lightList.begin(), i = 0; it != m_lightList.end(); it++, ++i) {
+		(*it)->Activate(shader, i);
 	}
 }

@@ -35,4 +35,7 @@ private:
 	std::vector<Texture*> m_vecTextures;
 	GLuint m_vaoHandle;	
 	VertexBufferObject* m_vertexBufferObject;
+
+	glm::mat4 m_mvpMatrix;
+	glm::mat3 m_normalMatrix;
 };

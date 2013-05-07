@@ -81,6 +81,17 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	
 	cameraGroup->AddChild(camera);
 
+	//--------------------------------------------------------
+
+	Group* lightGroup = new Group;
+	cameraGroup->SetScene(scene);
+	scene->AddChild(lightGroup);
+
+	// light: color, direction, intensity
+	Light* light = new Light(glm::vec3(1.0f, 0.2f, 0.8f), glm::vec3(0.8f, 0.5f, 0.7f), 0.4f);
+	light->SetScene(scene);
+	lightGroup->AddChild(light);
+
 	return scene;
 }
 
@@ -171,7 +182,7 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 		}
 	}
 
-	if (/*assimpMesh->HasNormals()*/ false) {
+	if (assimpMesh->HasNormals()) {
 		normalBuffer = new float[numOfVertices * 3];
 		for(unsigned int i = 0; i < numOfVertices; i++) {
 			normalBuffer[i*3] = assimpMesh->mNormals[i].x;
@@ -203,8 +214,10 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 		
 
 	} else {
-		shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
-		shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
+		//shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
+		//shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
+		shader->SetVertexShaderPath(".\\resources\\shader\\SimpleDirectionalLight.vert");
+		shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleDirectionalLight.frag");
 	}
 	mesh->SetShader(shader);
 

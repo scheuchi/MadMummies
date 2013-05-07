@@ -23,6 +23,10 @@ void Game::Init()
 	m_scene = m_loader->LoadScene("dummy");
 	m_traverser = new NodeTraverser();
 	m_traverser->Traverse(m_scene, NodeTraverser::UploadToVram, 0);
+
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Game::Update(double deltaT)

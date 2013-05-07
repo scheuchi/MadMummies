@@ -45,6 +45,7 @@ void Texture::Activate()
 {
 	// bind texture
 	glActiveTexture(GL_TEXTURE0 + m_unit);
-	glBindTexture(GL_TEXTURE_2D, m_handle); 
+	glBindTexture(GL_TEXTURE_2D, m_handle);
+
 	Base::Activate();
 }

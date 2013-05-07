@@ -31,21 +31,38 @@ void Mesh::Render()
  
 	if(m_shader != 0) {
 		m_shader->Activate();
-		GLint mvpLocation = m_shader->GetUniformLocation("mvp");
-		glm::mat4& projectionMatrix = Base::GetScene()->GetActiveCamera()->GetProjectionMatrix();
-		glm::mat4& viewMatrix = Base::GetScene()->GetActiveCamera()->GetViewMatrix();
-		glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * GetModelMatrix();
-		glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+		GLint location = m_shader->GetUniformLocation("mvp");
+		if (location != -1) {
+			glm::mat4& projectionMatrix = Base::GetScene()->GetActiveCamera()->GetProjectionMatrix();
+			glm::mat4& viewMatrix = Base::GetScene()->GetActiveCamera()->GetViewMatrix();
+			m_mvpMatrix = projectionMatrix * viewMatrix * GetModelMatrix();
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(m_mvpMatrix));
+
+			location = m_shader->GetUniformLocation("normalMatrix");
+			if (location != -1) {	
+				m_normalMatrix = glm::transpose(glm::inverse(glm::mat3(viewMatrix * GetModelMatrix())));
+				glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(m_normalMatrix));
+			}
+		} else {
+			std::cout << "Unable to set mvp matrix." << std::endl;
+			system("pause");
+			exit(-1);
+		}
+	}
+
+	if (Base::GetScene() != 0) {
+		Base::GetScene()->ActivateLights(m_shader);
 	}
 	
-	int i = 0;
 	std::stringstream strIndex;
-	for (std::vector<Texture*>::iterator itr = m_vecTextures.begin(); itr != m_vecTextures.end(); ++itr, ++i) {
+	for (std::vector<Texture*>::iterator itr = m_vecTextures.begin(); itr != m_vecTextures.end(); ++itr) {
 		(*itr)->Activate();
 		strIndex.clear();
-		strIndex << "colorTexture" << i;
+		strIndex << "colorTexture" << (*itr)->GetTextureUnit();
 		GLint location = m_shader->GetUniformLocation(strIndex.str().c_str());
-		glUniform1i(location, (*itr)->GetTextureUnit()); 
+		if (location != -1) {
+			glUniform1i(location, (*itr)->GetTextureUnit()); // todo: might be texture handle
+		}
 	}
  
 	if (m_vertexBufferObject != 0) {
@@ -85,22 +102,32 @@ void Mesh::UploadToVram()
 		if (m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribPosition0, handle)) {
 			glBindBuffer(GL_ARRAY_BUFFER, handle);
 			GLint positionIndex = m_shader->GetAttributeLocation("position");
-			glEnableVertexAttribArray(positionIndex);
-			glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+			if (positionIndex != -1) {
+				glEnableVertexAttribArray(positionIndex);
+				glVertexAttribPointer(positionIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+			} else {
+				std::cout << "Unable to enable position vertices." << std::endl;
+				system("pause");
+				exit(-1);
+			}
 		}
  
 		if (m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribNormal0, handle)) {
 			glBindBuffer(GL_ARRAY_BUFFER, handle);
 			GLint normalIndex = m_shader->GetAttributeLocation("normal");
-			glEnableVertexAttribArray(normalIndex);
-			glVertexAttribPointer(normalIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+			if (normalIndex != -1) {
+				glEnableVertexAttribArray(normalIndex);
+				glVertexAttribPointer(normalIndex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+			}
 		}
 
 		if (m_vertexBufferObject->GetAttributeHandle(VertexBufferObject::AttribUv0, handle)) {
 			glBindBuffer(GL_ARRAY_BUFFER, handle);
 			GLint uvIndex = m_shader->GetAttributeLocation("uv");
-			glEnableVertexAttribArray(uvIndex);
-			glVertexAttribPointer(uvIndex, 2, GL_FLOAT, GL_FALSE, 0, 0);
+			if (uvIndex != -1) {
+				glEnableVertexAttribArray(uvIndex);
+				glVertexAttribPointer(uvIndex, 2, GL_FLOAT, GL_FALSE, 0, 0);
+			}
 		}
  
 		if (m_vertexBufferObject->GetIndexBufferHandle(handle)) {
