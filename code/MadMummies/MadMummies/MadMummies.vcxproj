@@ -104,6 +104,7 @@
     <ClCompile Include="src\Engine\Core\Transformable.cpp" />
     <ClCompile Include="src\Engine\Core\VertexBufferObject.cpp" />
     <ClCompile Include="src\Engine\Loader\Loader.cpp" />
+    <ClCompile Include="src\Engine\Util\ImageLoader.cpp" />
     <ClCompile Include="src\Engine\Util\UserInputServer.cpp" />
     <ClCompile Include="src\Engine\Util\Util.cpp" />
     <ClCompile Include="src\Game\Behavior\CameraBehavior.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="src\Engine\Core\Transformable.h" />
     <ClInclude Include="src\Engine\Core\VertexBufferObject.h" />
     <ClInclude Include="src\Engine\Loader\Loader.h" />
+    <ClInclude Include="src\Engine\Util\ImageLoader.h" />
     <ClInclude Include="src\Engine\Util\UserInputServer.h" />
     <ClInclude Include="src\Engine\Util\Util.h" />
     <ClInclude Include="src\Game\Behavior\CameraBehavior.h" />

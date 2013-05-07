@@ -7,6 +7,7 @@
 #include "Engine/Core/Shader.h"
 #include "Engine/Core/Mesh.h"
 #include "Engine/Core/Group.h"
+#include "Engine/Util/ImageLoader.h"
 
 #include "Game/Behavior/MeshBehavior.h"
 #include "Game/Behavior/CameraBehavior.h"
@@ -210,6 +211,20 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 		// todo create materials
 		aiMaterial* material = assimpScene->mMaterials[assimpMesh->mMaterialIndex];
 		int count = material->GetTextureCount(aiTextureType_DIFFUSE);
+
+		if (count > 0) {
+			aiString path;
+			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+			int width = 0;
+			int height = 0;
+			unsigned char* data;
+			if (ImageLoader::LoadImage(path.C_Str(), width, height, data)) {
+				Texture* tex = new Texture();
+				tex->SetBitmap(new Bitmap(width, height, data));
+				tex->SetTextureUnit(0);
+				mesh->AddTexture(tex);
+			}
+		}
 		
 		
 
