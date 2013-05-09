@@ -204,7 +204,7 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 	mesh->SetVertexBufferObject(vbo);
 	
 	Shader* shader = new Shader();
-	if (false) { //assimpMesh->HasTextureCoords(0)) {
+	if (assimpMesh->HasTextureCoords(0)) {
 		shader->SetVertexShaderPath(".\\resources\\shader\\SimpleTexture.vert");
 		shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleTexture.frag");
 
