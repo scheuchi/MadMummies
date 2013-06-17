@@ -24,11 +24,12 @@ public:
 	void SetShader(Shader* shader) { m_shader = shader; }
 	Shader* GetShader() { return m_shader; }
 
-	void AddTexture(Texture* texture) { m_vecTextures.push_back(texture); }
+	void AddTexture(Texture* texture) { if (texture != 0) { m_vecTextures.push_back(texture); } }
 	std::vector<Texture*> GetTextures() { return m_vecTextures; }
 
 	void SetVertexBufferObject(VertexBufferObject* vbo) { m_vertexBufferObject = vbo; }
 	VertexBufferObject* GetVertexBufferObject() { return m_vertexBufferObject; }
+
 
 private:
 	Shader* m_shader;

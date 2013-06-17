@@ -4,9 +4,11 @@
 #include "Engine/Core/Camera.h"
 #include "Engine/Core/Light.h"
 
+
 #include <vector>
 
 class Shader;
+class PhysicsWorld;
 
 
 class Scene : public Transformable
@@ -27,6 +29,9 @@ public:
 	Camera* GetActiveCamera() { return m_activeCamera; }
 	void ActivateLights(Shader* shader);
 
+	void SetPhysicsWorld(PhysicsWorld* physicsWorld) { m_physicsWorld = physicsWorld; }
+	PhysicsWorld* GetPhysicsWorld() { return m_physicsWorld; }
+
 private:
 	void AddCamera(Camera* camera) { m_cameraList.push_back(camera); }
 	void RemoveCamera(Camera* camera);
@@ -38,5 +43,6 @@ private:
 	std::vector<Camera*> m_cameraList;
 	std::vector<Light*> m_lightList;
 	Camera* m_activeCamera;
+	PhysicsWorld* m_physicsWorld;
 };
 

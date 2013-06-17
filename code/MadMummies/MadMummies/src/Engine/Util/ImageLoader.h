@@ -1,9 +1,5 @@
 #pragma once
 
-#include "glew.h"
-
-#include <iostream>
-
 class ImageLoader
 {
 public:

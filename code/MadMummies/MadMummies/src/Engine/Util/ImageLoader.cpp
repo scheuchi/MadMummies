@@ -3,22 +3,21 @@
 
 #include <il/il.h>
 
+#include <iostream>
+
+
 
 bool ImageLoader::LoadImage(const char* filepath, int& width, int& height, unsigned char*& data)
 {
 	bool success = false;
 
 	ILuint image;
+	ilInit();
 	ilGenImages(1, &image);
 	ilBindImage(image);
 
-	const size_t cSize = strlen(filepath);
-    wchar_t* wFilepath = new wchar_t[cSize + 1];
-
-	size_t returnSize = 0;
-    mbstowcs_s(&returnSize, wFilepath, cSize + 1, filepath, cSize);
-
-	success = ilLoadImage(wFilepath) == 0;
+	success = ilLoadImage(filepath);
+	_ASSERT(success == true);
 
 	int tmp = 0;
 	tmp = ilGetInteger(IL_IMAGE_FORMAT);

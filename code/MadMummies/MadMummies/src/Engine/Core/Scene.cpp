@@ -4,10 +4,12 @@
 #include <iostream>
 
 #include "Shader.h"
+#include "Engine\Physics\PhysicsWorld.h"
 
 
-Scene::Scene() : m_cameraList(), m_activeCamera(0), m_lightList()
+Scene::Scene() : m_cameraList(), m_activeCamera(0), m_lightList(), m_physicsWorld(0)
 {
+	m_physicsWorld = new PhysicsWorld();
 }
 
 Scene::~Scene()

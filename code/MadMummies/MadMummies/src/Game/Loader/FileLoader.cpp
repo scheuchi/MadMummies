@@ -7,11 +7,12 @@
 #include "Engine/Core/Shader.h"
 #include "Engine/Core/Mesh.h"
 #include "Engine/Core/Group.h"
-#include "Engine/Util/ImageLoader.h"
+#include "Engine/Util/ResourceCache.h"
 
-#include "Game/Behavior/MeshBehavior.h"
+
 #include "Game/Behavior/CameraBehavior.h"
 #include "Game/Behavior/DuckBehavior.h"
+#include "Game/Behavior/WallBehavior.h"
 
 #include <assimp/Importer.hpp> // C++ importer interface
 #include <assimp/scene.h> // Output data structure
@@ -29,20 +30,8 @@ FileLoader::~FileLoader()
 Scene* FileLoader::LoadScene(std::string sceneName)
 {
 	Assimp::Importer importer;
-	
-	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\blender\\labyrinth_01.blend", aiProcess_Triangulate);
+	const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckieMaze2.dae", aiProcess_Triangulate);
 
-	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\cube_untextured.dae", aiProcess_Triangulate);
-
-	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duck.dae", aiProcess_Triangulate);
-
-
-	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\walls_p.dae", aiProcess_Triangulate);
-	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\wall_parallel.dae", aiProcess_Triangulate);
-	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckWithWalls.dae", aiProcess_Triangulate);
-	const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\duckieMaze.dae", aiProcess_Triangulate);
-	//const aiScene* assimpScene = importer.ReadFile(".\\resources\\meshes\\rubberDuck.dae", aiProcess_Triangulate);
-	
 	if(assimpScene == 0) {
 		std::cout << importer.GetErrorString() << std::endl;
 		system("pause");
@@ -57,6 +46,8 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 
 	Scene* scene = CreateNode(assimpScene, assimpScene->mRootNode, 0, 0);
 
+	//--------------------------------------------------------
+
 	Group* cameraGroup = new Group;
 	cameraGroup->SetScene(scene);
 	scene->AddChild(cameraGroup);
@@ -65,14 +56,14 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 	camera->SetScene(scene);
 	camera->SetViewport(0, 0, 1024, 768);
 	
-	//camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	//camera->InitMatrix();	
 	glm::mat4 cameraTransformation(1.0f, 0.0f, 0.0f, 0.0f,
 				0.0f, 0.68f, -0.73f, 0.0f,
 				0.0f, 0.73f, 0.68f, 0.0f,
 				0.0f, -102.0f, -60.0f, 10.0f);
 	camera->SetLocalMatrix(cameraTransformation);
 	camera->LookAt(glm::vec3(0.0f,1.0f,20.0f),glm::vec3(0.0f,0.0f,-1.0f));
+
+	camera->SetPosition(glm::vec3(0.0f, 3.0f, 0.0f));
 
 	camera->SetNearPlane(0.1f);
 	camera->SetFarPlane(1000.0f);
@@ -106,16 +97,15 @@ Scene* FileLoader::CreateNode(const aiScene* assimpScene, aiNode* assimpNode, No
 		parent = scene;
 	} else if (assimpNode->mNumMeshes > 0) {
 		Mesh* newMesh = CreateMesh(assimpScene, assimpNode, paramScene);
-		// *pCube*
+		parent->AddChild(newMesh);
+		parent = newMesh;
 		if (std::strcmp(assimpNode->mName.C_Str(),"myDuckie_LOD3sp") == 0) {
 			newMesh->SetBehavior(new DuckBehavior());
 		} else {
-			//newMesh->SetBehavior(new MeshBehavior());
+			newMesh->SetBehavior(new WallBehavior());
 		}
-		parent->AddChild(newMesh);
-		parent = newMesh;		
 	} else {
-		Group* newGroup = CreateGroup(assimpScene, assimpNode, paramScene);		
+		Group* newGroup = CreateGroup(assimpScene, assimpNode, paramScene);
 		parent->AddChild(newGroup);
 		parent = newGroup;
 	}
@@ -215,22 +205,9 @@ Mesh* FileLoader::CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Sce
 		if (count > 0) {
 			aiString path;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-			int width = 0;
-			int height = 0;
-			unsigned char* data;
-			if (ImageLoader::LoadImage(path.C_Str(), width, height, data)) {
-				Texture* tex = new Texture();
-				tex->SetBitmap(new Bitmap(width, height, data));
-				tex->SetTextureUnit(0);
-				mesh->AddTexture(tex);
-			}
+			mesh->AddTexture(ResourceCache::GetInstance()->RequestTexture(path.C_Str()));
 		}
-		
-		
-
 	} else {
-		//shader->SetVertexShaderPath(".\\resources\\shader\\SimpleColor.vert");
-		//shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleColor.frag");
 		shader->SetVertexShaderPath(".\\resources\\shader\\SimpleDirectionalLight.vert");
 		shader->SetFragmentShaderPath(".\\resources\\shader\\SimpleDirectionalLight.frag");
 	}
