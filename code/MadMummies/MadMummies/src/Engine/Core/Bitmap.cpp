@@ -3,23 +3,10 @@
 #include <iostream>
 
 
-Bitmap::Bitmap(std::string path) : m_path(path), m_data(0)
+Bitmap::Bitmap(int width, int height, unsigned char* data) : m_width(width), m_height(height), m_data(data)
 {
 }
 
 Bitmap::~Bitmap()
 {
-}
-
-unsigned char* Bitmap::GetData()
-{
-	if (m_data != 0) {
-		m_data = LoadBitmap();
-	}
-	return m_data;	
-}
-
-unsigned char* Bitmap::LoadBitmap()
-{
-	return 0;
 }

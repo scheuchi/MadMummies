@@ -2,8 +2,8 @@
 
 #include "GraphicsResource.h"
 
-#include "glew.h"
-
+#include <glew.h>
+#include <glm/glm.hpp>
 
 class VertexBufferObject : public GraphicsResource
 {	
@@ -39,6 +39,9 @@ public:
 	bool IsIndexed() { return m_indexBuffer != 0; }
 	unsigned int GetVertexIndexCount() { return m_indexCount; }
 	unsigned int GetVertexCount() { return m_vertexCount; }
+
+	void GetBoundingBox(glm::vec3& size, glm::vec3& center, glm::vec3& halfBox);
+
 
 private:
 	int m_positionBufferHandle;

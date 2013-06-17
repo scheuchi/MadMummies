@@ -2,7 +2,6 @@
 
 #include "Engine/Util/Util.h"
 #include "Game/Loader/FileLoader.h"
-#include "Game/Loader/DummyLoader.h"
 #include "Engine/Core/NodeTraverser.h"
 #include "Engine/Core/Scene.h"
 #include "Engine/Util/UserInputServer.h"

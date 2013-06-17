@@ -114,3 +114,25 @@ bool VertexBufferObject::GetIndexBufferHandle(GLuint& handle)
 		return false;
 	}
 }
+
+void VertexBufferObject::GetBoundingBox(glm::vec3& size, glm::vec3& center, glm::vec3& halfBox)
+{
+	GLfloat min_x, max_x, min_y, max_y, min_z, max_z;
+	min_x = max_x = m_positionBuffer[0];
+	min_y = max_y = m_positionBuffer[1];
+	min_z = max_z = m_positionBuffer[2];
+	for (int i = 1; i < m_vertexCount; i++) {
+		if (m_positionBuffer[3*i+0] < min_x) min_x = m_positionBuffer[3*i+0];
+		if (m_positionBuffer[3*i+0] > max_x) max_x = m_positionBuffer[3*i+0];
+		if (m_positionBuffer[3*i+1] < min_y) min_y = m_positionBuffer[3*i+1];
+		if (m_positionBuffer[3*i+1] > max_y) max_y = m_positionBuffer[3*i+1];
+		if (m_positionBuffer[3*i+2] < min_z) min_z = m_positionBuffer[3*i+2];
+		if (m_positionBuffer[3*i+2] > max_z) max_z = m_positionBuffer[3*i+2];
+	}
+	size = glm::vec3(max_x-min_x, max_y-min_y, max_z-min_z);
+	center = glm::vec3((min_x+max_x)/2, (min_y+max_y)/2, (min_z+max_z)/2);
+	halfBox = glm::vec3(glm::max(glm::abs(max_x),glm::abs(min_x)),
+						glm::max(glm::abs(max_y),glm::abs(min_y)),
+						glm::max(glm::abs(max_z),glm::abs(min_z)));
+
+}

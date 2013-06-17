@@ -58,10 +58,14 @@ void Mesh::Render()
 	for (std::vector<Texture*>::iterator itr = m_vecTextures.begin(); itr != m_vecTextures.end(); ++itr) {
 		(*itr)->Activate();
 		strIndex.clear();
-		strIndex << "colorTexture" << (*itr)->GetTextureUnit();
+		if ((*itr)->GetTextureUnit() > 0) {
+			strIndex << "colorTexture" << (*itr)->GetTextureUnit() << "\0";
+		} else {
+			strIndex << "colorTexture" << "\0";
+		}
 		GLint location = m_shader->GetUniformLocation(strIndex.str().c_str());
 		if (location != -1) {
-			glUniform1i(location, (*itr)->GetTextureUnit()); // todo: might be texture handle
+			glUniform1i(location, (*itr)->GetTextureUnit());
 		}
 	}
  

@@ -6,7 +6,7 @@
 
 class Shader;
 
-class Light : public Transformable
+class Light : public Transformable // todo: other light types: point, spot, ambient
 {
 	typedef Transformable Base;
 

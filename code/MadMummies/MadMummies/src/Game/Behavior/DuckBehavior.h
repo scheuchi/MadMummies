@@ -5,7 +5,8 @@
 
 
 class Node;
-class Transformable;
+class Mesh;
+class btRigidBody;
 
 class DuckBehavior : public Behavior
 {
@@ -20,5 +21,6 @@ public:
 	virtual void Update(double deltaT);
 
 private:
-	Transformable* m_transformable;
+	Mesh* m_treasure;
+	btRigidBody* m_physicsRigidBody;
 };
