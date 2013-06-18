@@ -19,7 +19,7 @@ public:
 	virtual Scene* LoadScene(std::string sceneName);
 
 private:
-	Scene* CreateNode(const aiScene* assimpScene, aiNode* assimpNode, Node* parent, Scene* paramScene);
+	void CreateNode(const aiScene* assimpScene, Scene*& scene, aiNode* assimpNode, Node* parent);
 	Scene* CreateScene(const aiScene* assimpScene, aiNode* assimpNode);
 	Group* CreateGroup(const aiScene* assimpScene, aiNode* assimpNode, Scene* paramScene);
 	Mesh* CreateMesh(const aiScene* assimpScene, aiNode* assimpNode, Scene* paramScene);

@@ -44,7 +44,28 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 		exit(-1);
 	}
 
-	Scene* scene = CreateNode(assimpScene, assimpScene->mRootNode, 0, 0);
+	Scene* scene = 0;
+	CreateNode(assimpScene, scene, assimpScene->mRootNode, scene);
+
+	// -------------------------------------------------------------------------------
+
+	assimpScene = importer.ReadFile(".\\resources\\meshes\\mummy.dae", aiProcess_Triangulate);
+
+	if(assimpScene == 0) {
+		std::cout << importer.GetErrorString() << std::endl;
+		system("pause");
+		exit(-1);
+	}
+
+	if (assimpScene->mRootNode == 0) {
+		std::cout << "Imported file doesn't contain nodes." << std::endl;
+		system("pause");
+		exit(-1);
+	}
+
+	CreateNode(assimpScene, scene, assimpScene->mRootNode, scene);
+
+	// -------------------------------------------------------------------------------
 
 	//--------------------------------------------------------
 
@@ -88,15 +109,13 @@ Scene* FileLoader::LoadScene(std::string sceneName)
 }
 
 
-Scene* FileLoader::CreateNode(const aiScene* assimpScene, aiNode* assimpNode, Node* parent, Scene* paramScene)
+void FileLoader::CreateNode(const aiScene* assimpScene, Scene*& scene, aiNode* assimpNode, Node* parent)
 {
-	Scene* scene = 0;
 	if (parent == 0) {
 		scene = CreateScene(assimpScene, assimpNode);
-		paramScene = scene;
 		parent = scene;
 	} else if (assimpNode->mNumMeshes > 0) {
-		Mesh* newMesh = CreateMesh(assimpScene, assimpNode, paramScene);
+		Mesh* newMesh = CreateMesh(assimpScene, assimpNode, scene);
 		parent->AddChild(newMesh);
 		parent = newMesh;
 		if (std::strcmp(assimpNode->mName.C_Str(),"myDuckie_LOD3sp") == 0) {
@@ -105,16 +124,14 @@ Scene* FileLoader::CreateNode(const aiScene* assimpScene, aiNode* assimpNode, No
 			newMesh->SetBehavior(new WallBehavior());
 		}
 	} else {
-		Group* newGroup = CreateGroup(assimpScene, assimpNode, paramScene);
+		Group* newGroup = CreateGroup(assimpScene, assimpNode, scene);
 		parent->AddChild(newGroup);
 		parent = newGroup;
 	}
 
 	for(unsigned int i = 0; i < assimpNode->mNumChildren; ++i) {
-		CreateNode(assimpScene, assimpNode->mChildren[i], parent, paramScene);
+		CreateNode(assimpScene, scene, assimpNode->mChildren[i], parent);
 	}
-
-	return scene;
 }
 
 
