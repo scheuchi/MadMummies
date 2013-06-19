@@ -46,6 +46,22 @@ void PhysicsWorld::Init()
 	m_dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
 	m_dynamicsWorld->setInternalTickCallback(myTickCallback);
+
+
+	// add ground floor as rigid body
+	btCollisionShape* shape = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
+
+	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0,-1,0)));
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
+		0,                  // mass
+		motionState,        // initial position
+		shape,              // collision shape of body
+		btVector3(0,0,0)    // local inertia
+	);
+ 
+	btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
+	m_dynamicsWorld->addRigidBody(rigidBody);
+
 }
 
 /*
